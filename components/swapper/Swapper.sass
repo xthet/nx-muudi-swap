@@ -1,78 +1,142 @@
 .sw
-  // width: 30vw
   @include fl-cl
-  @include fl-c  
-  // padding: 3rem
+  @include fl-c 
+  width: 35vw 
+  @media(max-width: $lg)
+    width: 45vw
+  @media(max-width: $sm)
+    width: 70vw
 
 .sw-menu
   width: 100%
   @include fl-cl
   @include fl-sb
 
-.tr-cont
-  width: 150px
-  height: 150px
-  border: 1px solid #fff
-  position: relative
-  // p
-  //   @include def-p
-  //   position: absolute
-  //   z-index: 5
-  //   top: 50%
-  //   left: 50%
-
-.sk-b
-  position: absolute
-  // background: blue
-  border: 1px solid orange
-  border-left: none
-  height: 40px
-  width: 80px
-  transform: skew(20deg,0deg)
-  left: 7.28px
-
-.st-b
-  @extend .sk-b
-  // background: red
-  border: 1px solid orange
-  border-right: none
-  transform: skew(0deg)
-  left: 0
-
-.st-text
-  @extend .st-b
-  z-index: 5
-  @include def-p
-  @include fl-cc
-
-
 .sw-menu-swap
-  // background: blue
   @include def-p
-  padding: 0.5em
+  width: 80%
+  height: 100%
+  @include fl-cc
+  position: absolute
+  z-index: 5
 
 .sw-menu-settings
-  @extend .sw-menu-swap
+  width: 110%
+  height: 100%
+  @include fl-cc
+  position: absolute
+  z-index: 5
 
 .sw-menu-settings-icon
   @include def-faicon
+  color: #000
 
 .sw-swap-box
+  @include fl-cl
+  @include fl-c
   width: 100%
-  border: 1px solid orange
+  border: 1px solid $color-text
+  border-radius: 0 0 0.5rem 0.5rem
 
 .sw-input-cont-wrapper
+  @include fl-cl
+  @include fl-c
+  gap: 1rem
+  padding: 1rem
   width: 100%  
 
-.sw-input-box
+.sw-inpt-grp
   @include fl-cl
+  @include fl-c
+  width: 100%
+  gap:0.46em
+
+.sw-py-max-grp
+  width: 100%
+  @include fl-cl
+  @include fl-sb
+
+.sw-py
+  @include def-p
+  font-size: 1.2rem
+
+.sw-max
+  @include def-p
+  font-size: 1.2rem
+
+.sw-inpt-cont
+  width: 100%
+  @include fl-cl
+  @include fl-c
+  background: rgba(255, 165, 0, 0.17)
+  padding: 0.8em 0.6em
+  border-radius: 0.3em
+
+.sw-inpt-box
+  @include fl-cl
+  @include fl-sb
   gap: 0.5rem
   width: 100%
+
+.sw-inpt
+  width: 72%
+  @include def-p
+  font-family: $font-inpt
+  font-size: 4rem
+  padding: 0.1em 0
+  background: none
+  outline: none
+  border: none
+
+.sw-tkn-sel
+  @include fl-cl
+  gap: 1.2rem
+  padding: 0.4em 0.5em
+  border: 1px solid $color-text
+  // background: #613F00
+  border-radius: 0.4em
+  cursor: pointer
+  &:hover
+    opacity: 0.8
+
+.sw-selected-tkn
+  @include fl-cl
+  gap: 0.2rem
+
+.sw-tkn-name
+  @include def-p
+  font-size: 1.6rem
+  font-family: $font-inpt
+  letter-spacing: 0.04em
+
+.sw-tkn-sel-icon
+  @include def-faicon
+  height: 1.2rem
+  margin-bottom: 0.15rem
+
+.sw-token-lg
+  @include def-faicon
+  height: 1.4rem
+  margin-bottom: 0.15rem
+
+.sw-doll-eq
+  width: 100%
+  @include fl-cl
+  @include def-p
+  font-size: 1.2rem
 
 .sw-swap-cta
   @include fl-cc
   width: 100%
+  padding: 1rem
+  padding-top: 0
 
 .sw-swap-btn
   @include def-btn
-
+  border: none
+  background: $color-text
+  width: 100%
+  font-size: 1.8rem
+  color: black
+  @include fl-cc
+  padding: 0.7em

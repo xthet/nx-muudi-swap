@@ -1,37 +1,67 @@
-import { faSliders } from "@fortawesome/free-solid-svg-icons"
+import { faEthereum } from "@fortawesome/free-brands-svg-icons"
+import { faChevronDown, faSliders } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 export default function Swapper() {
   return (
     <div className="sw">
       <div className="sw-menu">
-        <div className="tr-cont">
-          <div className="sk-b"></div>
-          <div className="st-b"></div>
-          <div className="st-text">{"Swap"}</div>
+        <div className="trz-cont -trz-disa">
+          <div className="trz-skw -skw-left -trz-left -trz-morph -trz-rml"></div>
+          <div className="trz-str -trz-left -trz-morph -trz-rml"></div>
+          <div className="sw-menu-swap">{"Swap"}</div>
         </div>
-        {/* <div className="sw-menu-swap">{"Swap"}</div> */}
-        <div className="sw-menu-settings">
-          <FontAwesomeIcon icon={faSliders} className="sw-menu-settings-icon"/>
-
+        <div className="trz-cont">
+          <div className="trz-skw -skw-right -trz-right"></div>
+          <div className="trz-str -trz-right"></div>
+          <div className="sw-menu-settings">
+            <FontAwesomeIcon icon={faSliders} className="sw-menu-settings-icon"/>
+          </div>
         </div>
       </div>
       <div className="sw-swap-box">
         <div className="sw-input-cont-wrapper">
-          <div className="sw-input-box">
-            <input type="text" className="sw-inpt"/>
-            <div className="sw-token-select">
-              {/* faethicon */}
-              <span>{"ETH"}</span>
-              {/* fadropicon */}
+          <div className="sw-inpt-grp">
+            <div className="sw-py-max-grp">
+              <span className="sw-py">{"PAY"}</span>
+              <span className="sw-max">{"MAX: 0.32 WETH"}</span>
+            </div>
+            <div className="sw-inpt-cont">
+              <div className="sw-inpt-box">
+                <input type="number" className="sw-inpt"/>
+                <div className="sw-tkn-sel">
+                  <div className="sw-selected-tkn">
+                    <FontAwesomeIcon icon={faEthereum} className="sw-token-lg"/>
+                    <span className="sw-tkn-name">{"ETH"}</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronDown} className="sw-tkn-sel-icon"/>
+                </div>
+              </div>
+              <div className="sw-doll-eq">
+                {"$4,072.32"}
+              </div>
             </div>
           </div>
-          <div className="sw-input-box">
-            <input type="text" className="sw-inpt"/>
-            <div className="sw-token-select">
-              {/* faethicon */}
-              <span>{"ETH"}</span>
-              {/* fadropicon */}
+
+          <div className="sw-inpt-grp">
+            <div className="sw-py-max-grp">
+              <span className="sw-py">{"GET"}</span>
+              {/* <span className="sw-max">{"MAX: 0.32 WETH"}</span> */}
+            </div>
+            <div className="sw-inpt-cont">
+              <div className="sw-inpt-box">
+                <input type="number" className="sw-inpt"/>
+                <div className="sw-tkn-sel">
+                  <div className="sw-selected-tkn">
+                    <FontAwesomeIcon icon={faEthereum} className="sw-token-lg"/>
+                    <span className="sw-tkn-name">{"ETH"}</span>
+                  </div>
+                  <FontAwesomeIcon icon={faChevronDown} className="sw-tkn-sel-icon"/>
+                </div>
+              </div>
+              <div className="sw-doll-eq">
+                {"$4,072.32"}
+              </div>
             </div>
           </div>
         </div>

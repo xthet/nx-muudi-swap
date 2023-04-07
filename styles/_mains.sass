@@ -39,6 +39,14 @@ button
     opacity: 0.5
     cursor: unset
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button 
+  -webkit-appearance: none
+  margin: 0
+input[type=number] 
+  -moz-appearance: textfield
+
+
 .p-page
   width: 100%
   min-height: 100vh
@@ -49,3 +57,47 @@ button
   width: 100%
   height: 100%
   padding-bottom: 7rem // footer-height
+
+.trz-cont
+  width: 140px
+  height: 40px
+  position: relative
+  cursor: pointer
+  transition: all 0.2s ease
+  &.-trz-disa
+    cursor: unset
+  &:hover
+    opacity: 0.9
+
+.trz-str
+  width: 80%
+  height: 100%
+  position: absolute
+  background: $color-text
+  border-radius: 0.5rem 0.5rem 0 0
+  top: 0
+  &.-trz-right
+    right: 0
+  &.-trz-left
+    left: 0
+  &.-trz-rml
+    border-right: none
+
+.-trz-morph
+  background: #613F00
+  border: 1px solid $color-text 
+  border-bottom: none
+
+.trz-skw
+  @extend .trz-str
+  &.-skw-right
+    transform: skew(-20deg,0deg)
+  &.-skw-left
+    transform: skew(20deg,0deg)
+  &.-trz-right
+    right: 5%
+  &.-trz-left
+    left: 5%
+  &.-trz-rml
+    border-left: none
+    border-right: 1px solid $color-text
