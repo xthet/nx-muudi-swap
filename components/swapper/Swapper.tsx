@@ -66,7 +66,7 @@ export default function Swapper() {
         </div>
         <div className="sw-swap-cta">
           <button className="sw-swap-btn">
-            {"Swap"}
+            {"SWAP"}
           </button>
         </div>
       </div>
