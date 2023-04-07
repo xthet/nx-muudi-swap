@@ -8,22 +8,35 @@
   width: 100%
   @include fl-cl
   @include fl-sb
-  .ft-logo
-    @include fl-cl
-    gap: 0.4rem
+  .ft-info-lg
+    @include def-rp
+    @media(max-width: $sm)
+      display: none
+  .ft-info-sm
+    display: none
+    @media(max-width: $sm)
+      @include fl-cl
+      @include fl-c
+      gap: 0.4rem
+      span
+        @include def-rp
 
-    img
-      height: 2.5rem
 
-    color: $color-text
-    font-family: $font-logo
-    font-weight: 600
-    font-size: 1.8rem
-    letter-spacing: 0.04em
-  span
-    @include def-p
-  .ft-git-icon
-    // width: 4rem
-    height: 2.4rem
-    color: $color-text
+.ft-logo
+  @include fl-cl
+  gap: 0.4rem
+  img
+    height: 2.5rem
+  p
+    display: none
+  color: $color-text
+  font-family: $font-logo
+  font-weight: 600
+  font-size: 1.8rem
+  letter-spacing: 0.04em
+
+.ft-git-icon
+  // width: 4rem
+  height: 2.4rem
+  color: $color-text
   

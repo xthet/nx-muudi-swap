@@ -2,10 +2,10 @@
   @include fl-cl
   @include fl-c 
   width: 35vw 
-  @media(max-width: $lg)
+  @media(max-width: $md)
     width: 45vw
   @media(max-width: $sm)
-    width: 70vw
+    width: 80vw
 
 .sw-menu
   width: 100%
@@ -19,6 +19,8 @@
   @include fl-cc
   position: absolute
   z-index: 5
+  color: $color-ltext
+  font-weight: 600
 
 .sw-menu-settings
   width: 110%
@@ -49,7 +51,7 @@
   @include fl-cl
   @include fl-c
   width: 100%
-  gap:0.46em
+  gap: 0.74rem
 
 .sw-py-max-grp
   width: 100%
@@ -59,17 +61,19 @@
 .sw-py
   @include def-p
   font-size: 1.2rem
+  font-weight: 600
+  letter-spacing: 0.03em
+  color: $color-subtext
 
 .sw-max
-  @include def-p
-  font-size: 1.2rem
+  @extend .sw-py
 
 .sw-inpt-cont
   width: 100%
   @include fl-cl
   @include fl-c
   background: rgba(255, 165, 0, 0.17)
-  padding: 0.8em 0.6em
+  padding: 1.3rem 0.96rem
   border-radius: 0.3em
 
 .sw-inpt-box
@@ -77,6 +81,7 @@
   @include fl-sb
   gap: 0.5rem
   width: 100%
+  padding-right: 0.5rem
 
 .sw-inpt
   width: 72%
@@ -87,17 +92,22 @@
   background: none
   outline: none
   border: none
+  @media(max-width: $md)
+    font-size: 4rem
+  @media(max-width: $sm)
+    font-size: 3rem
 
 .sw-tkn-sel
   @include fl-cl
   gap: 1.2rem
-  padding: 0.4em 0.5em
-  border: 1px solid $color-text
-  // background: #613F00
-  border-radius: 0.4em
+  padding: 0.64rem 0.8rem
+  background: $color-sub-bg
+  border-radius: 0.3em
   cursor: pointer
   &:hover
     opacity: 0.8
+  @media(max-width: $sm)
+    // padding: 
 
 .sw-selected-tkn
   @include fl-cl
@@ -124,6 +134,8 @@
   @include fl-cl
   @include def-p
   font-size: 1.2rem
+  font-weight: 600
+  color: $color-mtext
 
 .sw-swap-cta
   @include fl-cc
@@ -140,3 +152,5 @@
   color: black
   @include fl-cc
   padding: 0.7em
+  font-weight: 500
+  letter-spacing: 0.04em

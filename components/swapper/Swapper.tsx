@@ -38,15 +38,14 @@ export default function Swapper() {
                 </div>
               </div>
               <div className="sw-doll-eq">
-                {"$4,072.32"}
+                {"$1,072.32"}
               </div>
             </div>
           </div>
 
           <div className="sw-inpt-grp">
             <div className="sw-py-max-grp">
-              <span className="sw-py">{"GET"}</span>
-              {/* <span className="sw-max">{"MAX: 0.32 WETH"}</span> */}
+              <span className="sw-py">{"RECEIVE"}</span>
             </div>
             <div className="sw-inpt-cont">
               <div className="sw-inpt-box">
@@ -60,7 +59,7 @@ export default function Swapper() {
                 </div>
               </div>
               <div className="sw-doll-eq">
-                {"$4,072.32"}
+                {"$3,072.32"}
               </div>
             </div>
           </div>

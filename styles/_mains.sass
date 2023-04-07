@@ -6,9 +6,10 @@
 
 html,
 body 
-  background-color: #fff
+  background-color: #000
   background-image: url(../public/muudi__bg.svg)
   background-repeat: no-repeat
+  background-size: cover
   overflow: overlay
   color: #fff
   min-height: 100vh
@@ -68,6 +69,8 @@ input[type=number]
     cursor: unset
   &:hover
     opacity: 0.9
+  @media (max-width: $sm)
+    width: 100px
 
 .trz-str
   width: 80%
@@ -84,7 +87,7 @@ input[type=number]
     border-right: none
 
 .-trz-morph
-  background: #613F00
+  background: $color-sub-bg
   border: 1px solid $color-text 
   border-bottom: none
 
@@ -96,8 +99,12 @@ input[type=number]
     transform: skew(20deg,0deg)
   &.-trz-right
     right: 5%
+    @media(max-width: $sm)
+      right: 8%
   &.-trz-left
     left: 5%
+    @media (max-width: $sm)
+      left: 8%
   &.-trz-rml
     border-left: none
     border-right: 1px solid $color-text
