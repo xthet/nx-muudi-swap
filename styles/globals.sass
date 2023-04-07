@@ -1,46 +1,10 @@
-@import ./_imports
+@import ./_index
+@import ./_mixins
+@import ./_mains
 
-*
-  box-sizing: border-box
-  padding: 0
-  margin: 0
-  scroll-behavior: smooth
+@import ../pages/index
 
-html,
-body 
-  // background-color: #fff
-  background-image: url(../public/muudi__bg.svg)
-  background-repeat: no-repeat
-  overflow: overlay
-  color: #fff
-
-html
-  font-size: 62.5%
-
-body
-  font-size: 1.6rem
-  @media(max-width: $md)
-    font-size: 1rem
-  @media(max-width: $sm)
-    font-size: 0.8rem
-
-div, section, article 
-  scrollbar-color: #C4A2E7 #361E77 !important
-  scrollbar-width: thin !important
-
-a 
-  color: unset
-  text-decoration: none
-
-button
-  border: none
-  background: none
-  outline: none
-  &:disabled
-    opacity: 0.5
-    cursor: unset
-
-
-.p-full
-  width: 100%
-  min-height: 100vh
+@import ../components/footer/Footer
+@import ../components/navbar/Navbar
+@import ../components/swapper/Swapper
+@import ../components/tokenListModal/TokenListModal

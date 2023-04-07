@@ -1,5 +1,7 @@
 export default function Swapper() {
   return (
-    <div>Swapper</div>
+    <div className="sw">
+      {"swapper"}
+    </div>
   )
 }

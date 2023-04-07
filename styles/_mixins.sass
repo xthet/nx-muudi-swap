@@ -1,0 +1,85 @@
+@mixin fl-tl
+  display: flex
+  align-items: flex-start
+  justify-content: flex-start
+
+/* top-center */
+@mixin fl-tc
+  display: flex
+  align-items: flex-start
+  justify-content: center
+
+
+/* top-right */
+@mixin fl-tr
+  display: flex
+  align-items: flex-start
+  justify-content: flex-end
+
+
+/* center-left */
+@mixin fl-cl
+  display: flex
+  align-items: center
+  justify-content: flex-start
+
+
+/* center-center */
+@mixin fl-cc
+  display: flex
+  align-items: center
+  justify-content: center
+
+
+/* center-right */
+@mixin fl-cr
+  display: flex
+  align-items: center
+  justify-content: flex-end
+
+
+@mixin fl-bl
+  display: flex
+  align-items: flex-end
+  justify-content: flex-start
+
+
+@mixin fl-bc
+  display: flex
+  align-items: flex-end
+  justify-content: center
+
+
+@mixin fl-br
+  display: flex
+  align-items: flex-end
+  justify-content: flex-end
+
+
+/* space-between */
+@mixin fl-sb
+  justify-content: space-between
+
+
+@mixin fl-sa
+  justify-content: space-around
+
+
+@mixin fl-c
+  flex-direction: column
+
+@mixin no-select
+  -webkit-user-select: none
+  -ms-user-select: none
+  user-select: none
+
+@mixin def-p
+  font-family: $font-text
+  font-weight: 400
+  font-size: 1.5rem
+  line-height: 1em
+  color: $color-text
+  @media(max-width: $lg)
+    font-size: 1.2rem
+  @media(max-width: $sm)
+    font-size: 1rem

@@ -1,0 +1,41 @@
+.nv
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  z-index: 10
+  padding: 1.8rem
+
+.nv-wrapper
+  width: 100%
+  @include fl-cl
+  @include fl-sb
+
+.nv-logo
+  @include fl-cl
+  gap: 0.4rem
+  color: $color-text
+  font-family: $font-logo
+  font-weight: 700
+  font-size: 2.5rem
+  letter-spacing: 0.04em
+
+.nv-conn-btn
+  @include fl-cl
+  gap: 0.5rem
+  outline: none
+  border: 1px solid #F6A75A
+  border-radius: 0.25em
+  background: rgba(206, 137, 70, 0.62)
+  font-family: $font-text
+  font-size: 1.6rem
+  line-height: 1em
+  padding: 0.4em 0.9em
+  color: #FEC68F
+  cursor: pointer
+  &:hover
+    opacity: 0.8
+
+.nv-wallet-icon
+  height: 1.6rem
+  color: #FEC68F

@@ -1,12 +1,13 @@
 import Head from "next/head"
 import Image from "next/image"
 import { Inter } from "next/font/google"
+import { Swapper } from "@/components/exportComps"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export default function Home() {
   return (
-    <>
+    <main className="hm">
       <Head>
         <title>{"muudiswap"}</title>
         <meta name="description" content="Muudiswap - a decentralized exchange platform" />
@@ -14,7 +15,7 @@ export default function Home() {
         <link rel="icon" href="/muudiswap__favicon.svg" />
       </Head>
 
-      <p>{"Hello World"}</p>
-    </>
+      <Swapper/>
+    </main>
   )
 }

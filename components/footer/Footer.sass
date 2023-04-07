@@ -1,0 +1,29 @@
+.ft
+  position: absolute
+  bottom: 0
+  width: 100%
+  padding: 2rem
+
+.ft-wrapper
+  width: 100%
+  @include fl-cl
+  @include fl-sb
+  .ft-logo
+    @include fl-cl
+    gap: 0.4rem
+
+    img
+      height: 2.5rem
+
+    color: $color-text
+    font-family: $font-logo
+    font-weight: 600
+    font-size: 1.8rem
+    letter-spacing: 0.04em
+  span
+    @include def-p
+  .ft-git-icon
+    // width: 4rem
+    height: 2.4rem
+    color: $color-text
+  
