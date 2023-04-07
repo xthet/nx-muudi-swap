@@ -5,7 +5,12 @@ export default function Swapper() {
   return (
     <div className="sw">
       <div className="sw-menu">
-        <div className="sw-menu-swap">{"Swap"}</div>
+        <div className="tr-cont">
+          <div className="sk-b"></div>
+          <div className="st-b"></div>
+          <div className="st-text">{"Swap"}</div>
+        </div>
+        {/* <div className="sw-menu-swap">{"Swap"}</div> */}
         <div className="sw-menu-settings">
           <FontAwesomeIcon icon={faSliders} className="sw-menu-settings-icon"/>
 

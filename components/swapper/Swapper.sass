@@ -9,6 +9,39 @@
   @include fl-cl
   @include fl-sb
 
+.tr-cont
+  width: 150px
+  height: 150px
+  border: 1px solid #fff
+  position: relative
+  // p
+  //   @include def-p
+  //   position: absolute
+  //   z-index: 5
+  //   top: 50%
+  //   left: 50%
+
+.sk-b
+  position: absolute
+  background: blue
+  height: 40px
+  width: 80px
+  transform: skew(20deg,0deg)
+  left: 0
+
+.st-b
+  @extend .sk-b
+  background: red
+  transform: skew(0deg)
+  left: 0
+
+.st-text
+  @extend .st-b
+  z-index: 5
+  @include def-p
+  @include fl-cc
+
+
 .sw-menu-swap
   // background: blue
   @include def-p
