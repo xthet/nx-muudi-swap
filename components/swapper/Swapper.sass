@@ -2,8 +2,7 @@
   // width: 30vw
   @include fl-cl
   @include fl-c  
-  border: 1px solid orange
-  padding: 3rem
+  // padding: 3rem
 
 .sw-menu
   width: 100%
@@ -15,8 +14,15 @@
   @include def-p
   padding: 0.5em
 
+.sw-menu-settings
+  @extend .sw-menu-swap
+
+.sw-menu-settings-icon
+  @include def-faicon
+
 .sw-swap-box
   width: 100%
+  border: 1px solid orange
 
 .sw-input-cont-wrapper
   width: 100%  
@@ -26,4 +32,10 @@
   gap: 0.5rem
   width: 100%
 
+.sw-swap-cta
+  @include fl-cc
+  width: 100%
+
+.sw-swap-btn
+  @include def-btn
 

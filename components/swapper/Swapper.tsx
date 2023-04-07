@@ -1,10 +1,14 @@
+import { faSliders } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
 export default function Swapper() {
   return (
     <div className="sw">
       <div className="sw-menu">
         <div className="sw-menu-swap">{"Swap"}</div>
         <div className="sw-menu-settings">
-          {/* fontawesomeicon */}
+          <FontAwesomeIcon icon={faSliders} className="sw-menu-settings-icon"/>
+
         </div>
       </div>
       <div className="sw-swap-box">
@@ -26,7 +30,11 @@ export default function Swapper() {
             </div>
           </div>
         </div>
-        <button>{"Swap"}</button>
+        <div className="sw-swap-cta">
+          <button className="sw-swap-btn">
+            {"Swap"}
+          </button>
+        </div>
       </div>
       
     </div>

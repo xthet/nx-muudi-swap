@@ -83,3 +83,23 @@
     font-size: 1.2rem
   @media(max-width: $sm)
     font-size: 1rem
+
+@mixin def-faicon
+  height: 2rem
+  color: $color-text
+
+@mixin def-btn
+  @include fl-cl
+  gap: 0.5rem
+  outline: none
+  border: 1px solid #F6A75A
+  border-radius: 0.25em
+  background: rgba(206, 137, 70, 0.62)
+  font-family: $font-text
+  font-size: 1.6rem
+  line-height: 1em
+  padding: 0.4em 0.9em
+  color: #FEC68F
+  cursor: pointer
+  &:hover
+    opacity: 0.8
