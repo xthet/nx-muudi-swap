@@ -22,6 +22,7 @@ function ConnectionProvider ({ children }:props) {
   const [isConnected, setIsConnected] = useState(false)
   const [chainId, setChainId] = useState("31337")
   const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner | (() => ethers.providers.JsonRpcSigner) | null>(null)
+  const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>(null)
   const [account, setAccount] = useState("0x0")
   const [balance, setBalance] = useState("00")
 
@@ -32,6 +33,7 @@ function ConnectionProvider ({ children }:props) {
         await window.ethereum.request({ method: "eth_requestAccounts" })
         setIsConnected(true)
         const provider = new ethers.providers.Web3Provider(window.ethereum)
+        provider && setProvider(provider)
         const signer = await provider.getSigner()
         setSigner(signer)
         const { chainId } = await provider.getNetwork()
@@ -62,7 +64,7 @@ function ConnectionProvider ({ children }:props) {
           {
             await window.ethereum.request({
               method: "wallet_switchEthereumChain",
-              params: [{ chainId: "0xa869" }],
+              params: [{ chainId: "0x89" }],
             })
             console.log("You have switched to the right network")
           }
@@ -88,13 +90,13 @@ function ConnectionProvider ({ children }:props) {
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
       setHasMetamask(true)
-      updateUI()
+      updateUI().catch(e=>console.log(e))
     }else{if(confirm("You need a Metamask wallet to use this site,\nWould you like to install Metamask")){
       router.push("https://metamask.io/")
     }else{alert("Please install Metamask ;)")}}
   }, [account, chainId])
 
-  const payload:conn = { hasMetamask, isConnected, chainId, signer, account, connect, balance }
+  const payload:conn = { hasMetamask, isConnected, chainId, signer, account, connect, balance, provider:provider! }
 
   return (
     <ConnectionContext.Provider value={payload}>
