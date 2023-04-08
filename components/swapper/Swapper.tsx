@@ -1,12 +1,39 @@
 import { ConnectionContext } from "@/contexts/connection"
-import { conn } from "@/types"
+import useAlphaRouter from "@/hooks/useAlphaRouter"
+import { conn, oTx } from "@/types"
 import { faEthereum } from "@fortawesome/free-brands-svg-icons"
 import { faChevronDown, faSliders } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 
 export default function Swapper() {
   const { isConnected, signer, account }:conn = useContext(ConnectionContext)!
+  const { runSwap, getPrice, uniCtrt, wethCtrt } = useAlphaRouter()
+  const [loading, setLoading] = useState(false)
+  const [inputAmount, setInputAmount] = useState(0)
+  const [outputAmount, setOutputAmount] = useState<any>(0)
+  const [slippageAmount, setSlippageAmount] = useState(2)
+  const [deadlineMinutes, setDeadlineMinutes] = useState(10)
+  const [transaction, setTransaction] = useState<oTx|any>(null)
+  const [ratio, setRatio] = useState<any>()
+  const [wethAmount, setWethAmount] = useState("")
+  const [uniAmount, setUniAmount] = useState("")
+
+
+  async function getSwapPrice(inputAmount:number){
+    setLoading(true)
+    setInputAmount(inputAmount)
+    const swap = await getPrice(
+      inputAmount, 
+      slippageAmount, 
+      Math.floor(Date.now() / 1000 + (deadlineMinutes * 60)), 
+      account
+    )
+    setTransaction(swap[0])
+    setOutputAmount(swap[1])
+    setRatio(swap[2])
+    setLoading(false)
+  }
 
   return (
     <div className="sw">
