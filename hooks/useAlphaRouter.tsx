@@ -3,7 +3,7 @@ import { BigintIsh, CurrencyAmount, Percent, Token, TradeType } from "@uniswap/s
 import { ethers, BigNumber } from "ethers"
 import JSBI from "jsbi"
 import ERC20ABI from "@/constants/abis/ERC20.json"
-import { conn, tkn } from "@/types"
+import { conn, oTx, tkn } from "@/types"
 import { useContext } from "react"
 import { ConnectionContext } from "@/contexts/connection"
 
@@ -52,12 +52,12 @@ export default function useAlphaRouter() {
       { recipient:walletAddress, slippageTolerance:percentSlippage, deadline:deadline, type:1 }
     )
 
-    const transaction = {
-      data:route?.methodParameters?.calldata,
+    const transaction:oTx = {
+      data:route!.methodParameters!.calldata,
       to: V3_SWAP_ROUTER_ADDRESS,
-      value: BigNumber.from(route?.methodParameters?.value),
+      value: BigNumber.from(route!.methodParameters!.value),
       from: walletAddress,
-      gasPrice: BigNumber.from(route?.gasPriceWei),
+      gasPrice: BigNumber.from(route!.gasPriceWei),
       gasLimit: ethers.utils.hexlify(1000000)
     }
 
@@ -66,7 +66,14 @@ export default function useAlphaRouter() {
     return [transaction, quoteAmountOut, ratio]
   }
 
-  return (
-    <div>useAlphaRouter</div>
-  )
+  async function runSwap(transaction:oTx, signer:ethers.providers.JsonRpcSigner){
+    const approvalAmount = ethers.utils.parseUnits("10", 18).toString()
+    const wethCtrt = getWethCtrt()
+    await wethCtrt.approve(V3_SWAP_ROUTER_ADDRESS, approvalAmount)
+    await signer.sendTransaction(transaction)
+  }
+
+  return {
+    runSwap, getPrice, chainId
+  }
 }
