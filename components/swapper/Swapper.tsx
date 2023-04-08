@@ -1,8 +1,13 @@
+import { ConnectionContext } from "@/contexts/connection"
+import { conn } from "@/types"
 import { faEthereum } from "@fortawesome/free-brands-svg-icons"
 import { faChevronDown, faSliders } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useContext } from "react"
 
 export default function Swapper() {
+  const { isConnected, signer, account }:conn = useContext(ConnectionContext)!
+
   return (
     <div className="sw">
       <div className="sw-menu">
@@ -46,6 +51,7 @@ export default function Swapper() {
           <div className="sw-inpt-grp">
             <div className="sw-py-max-grp">
               <span className="sw-py">{"RECEIVE"}</span>
+              <span className="sw-py">{"1 ETH = 3 UNI"}</span>
             </div>
             <div className="sw-inpt-cont">
               <div className="sw-inpt-box">
@@ -65,8 +71,8 @@ export default function Swapper() {
           </div>
         </div>
         <div className="sw-swap-cta">
-          <button className="sw-swap-btn">
-            {"SWAP"}
+          <button className="sw-swap-btn" disabled={!isConnected}>
+            {isConnected ? "SWAP" : "Connect wallet"}
           </button>
         </div>
       </div>
