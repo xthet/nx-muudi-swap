@@ -3,9 +3,17 @@ import Image from "next/image"
 import { Inter } from "next/font/google"
 import { Swapper } from "@/components/exportComps"
 
-const inter = Inter({ subsets: ["latin"] })
+export const getStaticProps = async () => {
+  const response = await fetch("https://tokens.coingecko.com/uniswap/all.json").then(res=>res.json())
 
-export default function Home() {
+  return {
+    props: {
+      tkns: response
+    }
+  }
+}
+
+export default function Home({ tkns }:{tkns:any}) {
   return (
     <main className="hm">
       <Head>
@@ -15,7 +23,7 @@ export default function Home() {
         <link rel="icon" href="/muudiswap__favicon.svg" />
       </Head>
 
-      <Swapper/>
+      <Swapper tokens={tkns.tokens}/>
     </main>
   )
 }

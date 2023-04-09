@@ -60,11 +60,11 @@ function ConnectionProvider ({ children }:props) {
           const signer = await provider.getSigner()
           setSigner(signer)
           const { chainId } = await provider.getNetwork()
-          if(chainId.toString() !== "43113")
+          if(chainId.toString() !== "1")
           {
             await window.ethereum.request({
               method: "wallet_switchEthereumChain",
-              params: [{ chainId: "0x89" }],
+              params: [{ chainId: "0x1" }],
             })
             console.log("You have switched to the right network")
           }

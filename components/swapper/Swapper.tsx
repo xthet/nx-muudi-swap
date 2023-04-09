@@ -5,35 +5,37 @@ import { faEthereum } from "@fortawesome/free-brands-svg-icons"
 import { faChevronDown, faSliders } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useContext, useState } from "react"
+import { TokenListModal } from "../exportComps"
 
-export default function Swapper() {
+export default function Swapper({ tokens }:{tokens:Object[]}) {
   const { isConnected, signer, account }:conn = useContext(ConnectionContext)!
-  const { runSwap, getPrice, uniCtrt, wethCtrt } = useAlphaRouter()
-  const [loading, setLoading] = useState(false)
-  const [inputAmount, setInputAmount] = useState(0)
-  const [outputAmount, setOutputAmount] = useState<any>(0)
-  const [slippageAmount, setSlippageAmount] = useState(2)
-  const [deadlineMinutes, setDeadlineMinutes] = useState(10)
-  const [transaction, setTransaction] = useState<oTx|any>(null)
-  const [ratio, setRatio] = useState<any>()
-  const [wethAmount, setWethAmount] = useState("")
-  const [uniAmount, setUniAmount] = useState("")
+  const [showTLM, setShowTLM] = useState(false)
+  // const { runSwap, getPrice, uniCtrt, wethCtrt } = useAlphaRouter()
+  // const [loading, setLoading] = useState(false)
+  // const [inputAmount, setInputAmount] = useState(0)
+  // const [outputAmount, setOutputAmount] = useState<any>(0)
+  // const [slippageAmount, setSlippageAmount] = useState(2)
+  // const [deadlineMinutes, setDeadlineMinutes] = useState(10)
+  // const [transaction, setTransaction] = useState<oTx|any>(null)
+  // const [ratio, setRatio] = useState<any>()
+  // const [wethAmount, setWethAmount] = useState("")
+  // const [uniAmount, setUniAmount] = useState("")
 
 
-  async function getSwapPrice(inputAmount:number){
-    setLoading(true)
-    setInputAmount(inputAmount)
-    const swap = await getPrice(
-      inputAmount, 
-      slippageAmount, 
-      Math.floor(Date.now() / 1000 + (deadlineMinutes * 60)), 
-      account
-    )
-    setTransaction(swap[0])
-    setOutputAmount(swap[1])
-    setRatio(swap[2])
-    setLoading(false)
-  }
+  // async function getSwapPrice(inputAmount:number){
+  //   setLoading(true)
+  //   setInputAmount(inputAmount)
+  //   const swap = await getPrice(
+  //     inputAmount, 
+  //     slippageAmount, 
+  //     Math.floor(Date.now() / 1000 + (deadlineMinutes * 60)), 
+  //     account
+  //   )
+  //   setTransaction(swap[0])
+  //   setOutputAmount(swap[1])
+  //   setRatio(swap[2])
+  //   setLoading(false)
+  // }
 
   return (
     <div className="sw">
@@ -62,10 +64,11 @@ export default function Swapper() {
               <div className="sw-inpt-box">
                 <input type="number" className="sw-inpt"/>
                 <div className="sw-tkn-sel">
-                  <div className="sw-selected-tkn">
+                  <div className="sw-selected-tkn" onClick={()=>{setShowTLM(true)}}>
                     <FontAwesomeIcon icon={faEthereum} className="sw-token-lg"/>
                     <span className="sw-tkn-name">{"ETH"}</span>
                   </div>
+                  {showTLM && <TokenListModal/>}
                   <FontAwesomeIcon icon={faChevronDown} className="sw-tkn-sel-icon"/>
                 </div>
               </div>
@@ -103,7 +106,6 @@ export default function Swapper() {
           </button>
         </div>
       </div>
-      
     </div>
   )
 }
