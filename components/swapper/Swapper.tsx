@@ -10,6 +10,8 @@ import { TokenListModal } from "../exportComps"
 export default function Swapper({ tokens }:{tokens:any[]}) {
   const { isConnected, signer, account }:conn = useContext(ConnectionContext)!
   const [showTLM, setShowTLM] = useState(false)
+  const [payTkn, setPayTkn] = useState(["",""])
+  const [recTkn, setRecTkn] = useState(["",""])
 
   return (
     <div className="sw">
@@ -38,11 +40,11 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
               <div className="sw-inpt-box">
                 <input type="number" className="sw-inpt"/>
                 <div className="sw-tkn-sel">
-                  <div className="sw-selected-tkn" onClick={()=>{setShowTLM(true)}}>
+                  <div className="sw-selected-tkn">
                     <FontAwesomeIcon icon={faEthereum} className="sw-token-lg"/>
                     <span className="sw-tkn-name">{"ETH"}</span>
                   </div>
-                  <FontAwesomeIcon icon={faChevronDown} className="sw-tkn-sel-icon"/>
+                  <FontAwesomeIcon icon={faChevronDown} className="sw-tkn-sel-icon" onClick={()=>{setShowTLM(true)}}/>
                 </div>
               </div>
               <div className="sw-doll-eq">
@@ -66,7 +68,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
                     <FontAwesomeIcon icon={faEthereum} className="sw-token-lg"/>
                     <span className="sw-tkn-name">{"ETH"}</span>
                   </div>
-                  <FontAwesomeIcon icon={faChevronDown} className="sw-tkn-sel-icon"/>
+                  <FontAwesomeIcon icon={faChevronDown} className="sw-tkn-sel-icon" onClick={()=>{setShowTLM(true)}}/>
                 </div>
               </div>
               <div className="sw-doll-eq">

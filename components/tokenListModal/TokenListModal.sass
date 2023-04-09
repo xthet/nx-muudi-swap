@@ -30,7 +30,7 @@
   gap: 1rem
   background: #000
   overflow: hidden
-  border-radius: 0.5rem
+  border-radius: 0.5rem 0.5rem 0.5rem 0
   padding: 1rem
   width: 100%
   border: 1px solid $color-text
@@ -51,16 +51,44 @@
   scrollbar-width: thin !important
   @include fl-tl
   @include fl-c  
-  gap:1rem
-
-.tlm-tkn-grp
-  width: 100%
-  padding: 0.2rem
-  padding-bottom: 0
-  border-top: 1px solid rgba(255, 165, 0, 0.11)
 
 .tlm-tkn-grp
   @include fl-cl
+  gap:1rem
+  width: 100%
+  padding: 0.8rem
+  border-top: 1px solid rgba(255, 165, 0, 0.11)
+  cursor: pointer
+  &:hover
+    background: rgba(252, 168, 14, 0.048)
+
+.tlm-tkn-img
+  width: 2.5rem
+  border-radius: 50%
 
 .tlm-tkn-name
   @include def-rp
+  font-size: 1.8rem
+
+.tlm-tkn-sym
+  margin-left: auto
+  @include def-rp
+  opacity: 0.6
+
+.tlm-edge
+  position: relative
+
+.tlm-trz
+  position: absolute
+  width: 160px
+  height: 40px
+  background: #000
+  border: 1px solid $color-text
+  border-top: none
+  border-radius: 0 0 0.5rem 0.5rem
+
+.tlm-trz-skw
+  @extend .tlm-trz
+  transform: skewX(-20deg)
+  left: 10px
+  border-left: none
