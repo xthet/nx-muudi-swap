@@ -7,35 +7,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useContext, useState } from "react"
 import { TokenListModal } from "../exportComps"
 
-export default function Swapper({ tokens }:{tokens:Object[]}) {
+export default function Swapper({ tokens }:{tokens:any[]}) {
   const { isConnected, signer, account }:conn = useContext(ConnectionContext)!
   const [showTLM, setShowTLM] = useState(false)
-  // const { runSwap, getPrice, uniCtrt, wethCtrt } = useAlphaRouter()
-  // const [loading, setLoading] = useState(false)
-  // const [inputAmount, setInputAmount] = useState(0)
-  // const [outputAmount, setOutputAmount] = useState<any>(0)
-  // const [slippageAmount, setSlippageAmount] = useState(2)
-  // const [deadlineMinutes, setDeadlineMinutes] = useState(10)
-  // const [transaction, setTransaction] = useState<oTx|any>(null)
-  // const [ratio, setRatio] = useState<any>()
-  // const [wethAmount, setWethAmount] = useState("")
-  // const [uniAmount, setUniAmount] = useState("")
-
-
-  // async function getSwapPrice(inputAmount:number){
-  //   setLoading(true)
-  //   setInputAmount(inputAmount)
-  //   const swap = await getPrice(
-  //     inputAmount, 
-  //     slippageAmount, 
-  //     Math.floor(Date.now() / 1000 + (deadlineMinutes * 60)), 
-  //     account
-  //   )
-  //   setTransaction(swap[0])
-  //   setOutputAmount(swap[1])
-  //   setRatio(swap[2])
-  //   setLoading(false)
-  // }
 
   return (
     <div className="sw">
@@ -68,7 +42,7 @@ export default function Swapper({ tokens }:{tokens:Object[]}) {
                     <FontAwesomeIcon icon={faEthereum} className="sw-token-lg"/>
                     <span className="sw-tkn-name">{"ETH"}</span>
                   </div>
-                  {showTLM && <TokenListModal/>}
+                  {showTLM && <TokenListModal offMe={()=>{setShowTLM(false)}} tokens={tokens}/>}
                   <FontAwesomeIcon icon={faChevronDown} className="sw-tkn-sel-icon"/>
                 </div>
               </div>
