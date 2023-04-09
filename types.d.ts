@@ -11,6 +11,15 @@ export interface conn{
   balance: string
 }
 
+export interface gtkn{
+  chainId:number
+  address:string
+  name:string
+  symbol:string
+  decimals:number
+  logoURI:string
+}
+
 export interface tkn{
   name:string
   symbol:string

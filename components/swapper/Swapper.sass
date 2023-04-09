@@ -111,6 +111,10 @@
   @include fl-cl
   gap: 0.5rem
 
+.sw-tkn-lg
+  width: 2.2rem
+  border-radius: 50%
+
 .sw-tkn-name
   @include def-p
   font-size: 1.6rem
@@ -119,6 +123,11 @@
   color: #fff
   @media(max-width: $sm)
     font-size: 1.3rem
+
+.sw-tkn-noTkn
+  @extend .sw-tkn-name
+  font-size:1.4rem
+  white-space:nowrap
 
 .sw-tkn-sel-icon
   @include def-faicon

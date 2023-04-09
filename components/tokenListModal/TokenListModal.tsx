@@ -1,9 +1,13 @@
+import { gtkn } from "@/types"
+
 interface props {
   offMe:Function
-  tokens:any[]
+  tokens:gtkn[]
+  type:string
+  selTkn:Function
 }
 
-export default function TokenListModal({ offMe, tokens }:props) {
+export default function TokenListModal({ offMe, tokens, type, selTkn }:props) {
   return (
     <div className="tlm-cont">
       <div className="tlm-reactive" onClick={()=>{offMe()}}>
@@ -14,7 +18,7 @@ export default function TokenListModal({ offMe, tokens }:props) {
           <div className="tlm-grp">
             {tokens.slice(0,50).map((token, index)=>{
               return (
-                <div key={index} className="tlm-tkn-grp">
+                <div key={index} className="tlm-tkn-grp" onClick={()=>{selTkn(token); offMe()}}>
                   <img src={token.logoURI} alt="tkn_img" className="tlm-tkn-img"/>
                   <span className="tlm-tkn-name">{token.name.length > 10 ? token.name.substring(0,10) + "..." : token.name}</span>
                   <span className="tlm-tkn-sym">{token.symbol}</span>
