@@ -1,34 +1,63 @@
+.tlm-cont
+  @include fl-cc
+  @include fl-c 
+
 .tlm-reactive
   position: fixed
   top: 0
   right: 0
   left: 0
   bottom: 0
-  // z-index: 10
-  // background: rgba(0,0,0,0.11)
-  background: blue
+  width: 100%
+  z-index: 17
+  background: rgba(0,0,0,0.4)
+  // background: blue
   @include fl-cc
   @include fl-c
 
 .tlm
-  // margin-left: 50%
-  // margin-top: 50%
+  position: absolute
   width: 30vw
   height: 35vw
-  overflow: hidden
-  background: #000
-  box-shadow: 0 0 10px 10px rgba(255,255,255,0.05)
-  border-radius: 10px
-  padding: 1rem
   @include fl-tl
   @include fl-c
-  // z-index: 15
+  z-index: 20
+  // gap:1rem
+
+.tlm-box
+  @include fl-tl
+  @include fl-c
+  gap: 1rem
+  background: #000
+  overflow: hidden
+  border-radius: 0.5rem
+  padding: 1rem
+  width: 100%
+  border: 1px solid $color-text
+
+.tlm-search
+  width: 100%
+  @include def-rp
+  padding: 0.5em
+  border: 1px solid $color-text
+  border-radius: 0.5rem
+  background: none
+  outline: none
 
 .tlm-grp
   width: 100%
   overflow-y: scroll
+  scrollbar-color: #FF9326 #000 !important
+  scrollbar-width: thin !important
   @include fl-tl
   @include fl-c  
+  gap:1rem
+
+.tlm-tkn-grp
+  width: 100%
+  padding: 0.2rem
+  padding-bottom: 0
+  border-top: 1px solid rgba(255, 165, 0, 0.11)
 
 .tlm-tkn-grp
   @include fl-cl

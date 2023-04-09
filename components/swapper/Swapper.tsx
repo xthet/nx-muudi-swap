@@ -42,7 +42,6 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
                     <FontAwesomeIcon icon={faEthereum} className="sw-token-lg"/>
                     <span className="sw-tkn-name">{"ETH"}</span>
                   </div>
-                  {showTLM && <TokenListModal offMe={()=>{setShowTLM(false)}} tokens={tokens}/>}
                   <FontAwesomeIcon icon={faChevronDown} className="sw-tkn-sel-icon"/>
                 </div>
               </div>
@@ -51,6 +50,8 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
               </div>
             </div>
           </div>
+
+          {showTLM && <TokenListModal offMe={()=>{setShowTLM(false)}} tokens={tokens}/>}
 
           <div className="sw-inpt-grp">
             <div className="sw-py-max-grp">
