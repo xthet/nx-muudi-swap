@@ -1,5 +1,5 @@
 import { gtkn } from "@/types"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import useInfiniteScroll from "react-infinite-scroll-hook"
 
 interface props {
@@ -14,6 +14,7 @@ export default function TokenListModal({ offMe, tokens, type, selTkn }:props) {
   const [hasNext, setHasNext] = useState(true)
   const [error, setError] = useState(false)
   const [offset, setOffset] = useState(50)
+  const [tknArr, setTknArr] = useState<gtkn[]>([])
 
   const [sentryRef, { rootRef }] = useInfiniteScroll({
     loading: loading,
@@ -23,15 +24,35 @@ export default function TokenListModal({ offMe, tokens, type, selTkn }:props) {
     rootMargin: "0px 0px 400px 0px"
   })
 
+  function findInput(val:string){
+    let qTknsArr:gtkn[] = tokens.filter(token=>{
+      if(val == ""){return token}
+      else if(token.name.toLowerCase() == val.toLowerCase() || token.symbol.toLowerCase() == val.toLowerCase()){
+        return token
+      }
+      else if(token.name.toLowerCase().includes(val.toLowerCase()) || token.symbol.toLowerCase().includes(val.toLowerCase())){
+        return token
+      }
+    })
+
+    setTknArr(qTknsArr)
+  }
+
+  useEffect(()=>{
+    if(tokens){
+      setTknArr(tokens.sort((a,b)=>{return a.name.localeCompare(b.name)}))
+    }
+  },[tokens])
+
   return (
     <div className="tlm-cont">
       <div className="tlm-reactive" onClick={()=>{offMe()}}>
       </div>
       <div className="tlm">
         <div className="tlm-box">
-          <input type="text" className="tlm-search" placeholder="Search token name"/>
+          <input type="text" className="tlm-search" placeholder="Search token name" onChange={(e)=>{findInput(e.target.value)}}/>
           <div className="tlm-grp" ref={rootRef}>
-            {tokens.slice(0,offset).map((token, index)=>{
+            {tknArr.slice(0,offset).map((token, index)=>{
               return (
                 <div key={index} className="tlm-tkn-grp" onClick={()=>{selTkn(token); offMe()}}>
                   <img src={token.logoURI} alt="tkn_img" className="tlm-tkn-img"/>
@@ -42,7 +63,7 @@ export default function TokenListModal({ offMe, tokens, type, selTkn }:props) {
             })}
             {(loading || hasNext) && (
               <div ref={sentryRef}>
-                {"Loading..."}
+                {"..."}
               </div>
             )
             }
