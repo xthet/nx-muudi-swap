@@ -23,10 +23,14 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   const [payRec, setPayRec] = useState("pay")
   const [payTkn, setPayTkn] = useState<gtkn>(ethTkn)
   const [recTkn, setRecTkn] = useState<gtkn|any>({})
+  const [payVal, setPayVal] = useState("")
+  const [recVal, setRecVal] = useState("")
   const [payUSDRate, setPayUSDRate] = useState("")
   const [recUSDRate, setRecUSDRate] = useState("")
+  const [dloading, setDloading] = useState(false)
 
   async function getQuote(value:string, type:string){
+    setDloading(true)
     const exchangeList = "Uniswap_V3"
     if(payTkn.name && recTkn && recTkn.name){
       const params = {
@@ -44,6 +48,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
           setRecUSDRate(Number(parseFloat(data.buyTokenToEthRate).toFixed(2)).toLocaleString())
         })
         console.log("Uniswap Quote",)
+        setDloading(false)
       } catch (err) {
         console.error(err)
       }
@@ -75,7 +80,10 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
             </div>
             <div className="sw-inpt-cont">
               <div className="sw-inpt-box">
-                <input type="number" className="sw-inpt" onChange={(e)=>{getQuote(e.target.value, "pay")}}/>
+                <input type="number" className="sw-inpt" 
+                  onChange={(e)=>{setPayVal(e.target.value); !dloading && getQuote(e.target.value, "pay")}} 
+                  value={payVal}
+                />
                 <div className="sw-tkn-sel">
                   <div className="sw-selected-tkn">
                     <img src={payTkn.logoURI} alt="tkn" className="sw-tkn-lg"/>
@@ -85,7 +93,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
                 </div>
               </div>
               <div className="sw-doll-eq">
-                {"$" + payUSDRate}
+                {payUSDRate ? "$" + payUSDRate : ""}
               </div>
             </div>
           </div>
@@ -99,7 +107,10 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
             </div>
             <div className="sw-inpt-cont">
               <div className="sw-inpt-box">
-                <input type="number" className="sw-inpt"/>
+                <input type="number" className="sw-inpt" 
+                  onChange={(e)=>{setRecVal(e.target.value); !dloading && getQuote(e.target.value, "rec")}} 
+                  value={recVal}
+                />
                 <div className="sw-tkn-sel">
                   <div className="sw-selected-tkn">
                     {recTkn && recTkn.logoURI && recTkn.symbol ? <>
@@ -111,7 +122,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
                 </div>
               </div>
               <div className="sw-doll-eq">
-                {"$3,072.32"}
+                {recUSDRate ? "$" + recUSDRate : ""}
               </div>
             </div>
           </div>
