@@ -47,7 +47,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   async function getQuote(value:string, type:string){
     setDloading(true)
     const exchangeList = "Uniswap_V3"
-    if(payTkn.name && recTkn && recTkn.name && value){
+    if(payTkn.name && recTkn && recTkn.name && value && value != "0"){
       const params = {
         buyToken: recTkn.address,
         sellToken: payTkn.address,
@@ -87,12 +87,12 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
     setInterval(()=>{getEthPrice},300000)
   },[])
 
-  useEffect(()=>{
-    if(!dloading){
-      currInpt == "pay" && getQuote(payVal, "pay") 
-      currInpt == "rec" && getQuote(payVal, "rec")
-    }
-  },[dloading])
+  // useEffect(()=>{
+  //   if(!dloading){
+  //     currInpt == "pay" && payVal && getQuote(payVal, "pay") 
+  //     currInpt == "rec" && recVal && getQuote(recVal, "rec")
+  //   }
+  // },[dloading])
 
   return (
     <div className="sw">
@@ -120,7 +120,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
             <div className="sw-inpt-cont">
               <div className="sw-inpt-box">
                 <input type="number" className="sw-inpt" 
-                  onChange={(e)=>{setPayVal(e.target.value); setCurrInpt("pay")}} 
+                  onChange={(e)=>{setPayVal(e.target.value); setCurrInpt("pay"); !dloading ? getQuote(e.target.value, "pay") : setTimeout(()=>{getQuote(e.target.value, "pay")},1000)}} 
                   value={payVal}
                   style={dloading && currInpt == "rec" ? { "opacity":"0.6" } : {}}
                 />
@@ -148,7 +148,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
             <div className="sw-inpt-cont">
               <div className="sw-inpt-box">
                 <input type="number" className="sw-inpt" 
-                  onChange={(e)=>{setRecVal(e.target.value); setCurrInpt("rec")}} 
+                  onChange={(e)=>{setRecVal(e.target.value); setCurrInpt("rec"); !dloading ? getQuote(e.target.value, "rec") : setTimeout(()=>{getQuote(e.target.value, "rec")},1000)}} 
                   value={recVal}
                   style={dloading && currInpt == "pay" ? { "opacity":"0.6" } : {}}
                 />
