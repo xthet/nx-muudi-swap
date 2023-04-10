@@ -23,6 +23,30 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   const [payTkn, setPayTkn] = useState<gtkn>(ethTkn)
   const [recTkn, setRecTkn] = useState<gtkn|any>({})
 
+  async function checkInput(value:string, type:string){
+    if(type == "pay" && payTkn.name && recTkn && recTkn.name){
+      
+    }
+  }
+
+  async function getUniSwapV3Quote (inputToken:gtkn, outputToken:gtkn, value:string) {
+    const exchangeList = "Uniswap_V3"
+    const params = {
+      buyToken: outputToken.symbol,
+      sellToken: inputToken.symbol,
+      sellAmount: value, // Always denominated in wei
+      includedSources: exchangeList,
+    }
+    try {
+      const response = await fetch(
+        `https://api.0x.org/swap/v1/price?sellToken=${params.sellToken}&buyToken=${params.buyToken}&sellAmount=${params.sellAmount}`,
+      ).then(res=>res.json()).then(data=>console.log(data))
+      console.log("Uniswap Quote",)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   return (
     <div className="sw">
       <div className="sw-menu">
@@ -48,7 +72,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
             </div>
             <div className="sw-inpt-cont">
               <div className="sw-inpt-box">
-                <input type="number" className="sw-inpt"/>
+                <input type="number" className="sw-inpt" onChange={(e)=>{checkInput(e.target.value, "pay")}}/>
                 <div className="sw-tkn-sel">
                   <div className="sw-selected-tkn">
                     <img src={payTkn.logoURI} alt="tkn" className="sw-tkn-lg"/>
