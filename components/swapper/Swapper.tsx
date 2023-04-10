@@ -6,6 +6,7 @@ import { faChevronDown, faSliders } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useContext, useState } from "react"
 import { TokenListModal } from "../exportComps"
+import { ethers } from "ethers"
 
 const ethTkn:gtkn = {
   chainId: 1,
@@ -23,27 +24,24 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   const [payTkn, setPayTkn] = useState<gtkn>(ethTkn)
   const [recTkn, setRecTkn] = useState<gtkn|any>({})
 
-  async function checkInput(value:string, type:string){
-    if(type == "pay" && payTkn.name && recTkn && recTkn.name){
-      
-    }
-  }
-
-  async function getUniSwapV3Quote (inputToken:gtkn, outputToken:gtkn, value:string) {
+  async function getQuote(value:string, type:string){
     const exchangeList = "Uniswap_V3"
-    const params = {
-      buyToken: outputToken.symbol,
-      sellToken: inputToken.symbol,
-      sellAmount: value, // Always denominated in wei
-      includedSources: exchangeList,
-    }
-    try {
-      const response = await fetch(
-        `https://api.0x.org/swap/v1/price?sellToken=${params.sellToken}&buyToken=${params.buyToken}&sellAmount=${params.sellAmount}`,
-      ).then(res=>res.json()).then(data=>console.log(data))
-      console.log("Uniswap Quote",)
-    } catch (err) {
-      console.error(err)
+    if(payTkn.name && recTkn && recTkn.name){
+      const params = {
+        buyToken: recTkn.address,
+        sellToken: payTkn.address,
+        sellAmount: type == "pay" ? (Number(value) * Math.pow(10,payTkn.decimals)).toString() : "",
+        buyAmount: type == "rec" ? (Number(value) * Math.pow(10,recTkn.decimals)).toString() : "",
+        includedSources: exchangeList,
+      }
+      try {
+        const response = await fetch(
+          `https://api.0x.org/swap/v1/price?sellToken=${params.sellToken}&buyToken=${params.buyToken}&${type == "pay" ? "sellAmount=" + params.sellAmount : "buyAmount=" + params.buyAmount }&includedSources=${params.includedSources}`,
+        ).then(res=>res.json()).then(data=>console.log(data))
+        console.log("Uniswap Quote",)
+      } catch (err) {
+        console.error(err)
+      }
     }
   }
 
@@ -72,7 +70,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
             </div>
             <div className="sw-inpt-cont">
               <div className="sw-inpt-box">
-                <input type="number" className="sw-inpt" onChange={(e)=>{checkInput(e.target.value, "pay")}}/>
+                <input type="number" className="sw-inpt" onChange={(e)=>{getQuote(e.target.value, "pay")}}/>
                 <div className="sw-tkn-sel">
                   <div className="sw-selected-tkn">
                     <img src={payTkn.logoURI} alt="tkn" className="sw-tkn-lg"/>
