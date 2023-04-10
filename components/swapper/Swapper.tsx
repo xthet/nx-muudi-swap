@@ -42,11 +42,14 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
         includedSources: exchangeList,
       }
       try {
+        const ethPrice = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then(res=>res.json()).then(data=>data.ethereum.usd)
+
         const response = await fetch(
           `https://api.0x.org/swap/v1/price?sellToken=${params.sellToken}&buyToken=${params.buyToken}&${type == "pay" ? "sellAmount=" + params.sellAmount : "buyAmount=" + params.buyAmount }&includedSources=${params.includedSources}`,
         ).then(res=>res.json()).then((data)=>{
-          setPayUSDRate(Number(parseFloat(data.sellTokenToEthRate).toFixed(2)).toLocaleString())
-          setRecUSDRate(Number(parseFloat(data.buyTokenToEthRate).toFixed(2)).toLocaleString())
+          setPayUSDRate(Number((((Number(data.sellAmount) / (Math.pow(10,payTkn.decimals))) / Number(data.sellTokenToEthRate)) * Number(ethPrice)).toFixed(2)).toLocaleString())
+          setRecUSDRate(Number((((Number(data.buyAmount) / (Math.pow(10,recTkn.decimals))) / Number(data.buyTokenToEthRate)) * Number(ethPrice)).toFixed(2)).toLocaleString())
+          type == "pay" ? setRecVal((Number(data.buyAmount) / (Math.pow(10,recTkn.decimals))).toFixed(4)) : setPayVal((Number(data.sellAmount) / (Math.pow(10,payTkn.decimals))).toFixed(4))
         })
         console.log("Uniswap Quote",)
         setDloading(false)
