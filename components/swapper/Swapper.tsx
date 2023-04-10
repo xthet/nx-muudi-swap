@@ -25,6 +25,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   const [recTkn, setRecTkn] = useState<gtkn|any>({})
   const [payVal, setPayVal] = useState("")
   const [recVal, setRecVal] = useState("")
+  const [rprice, setRprice] = useState("")
   const [payUSDRate, setPayUSDRate] = useState("")
   const [recUSDRate, setRecUSDRate] = useState("")
   const [dloading, setDloading] = useState(false)
