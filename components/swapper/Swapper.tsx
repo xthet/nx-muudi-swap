@@ -87,12 +87,10 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
     setInterval(()=>{getEthPrice},300000)
   },[])
 
-  // useEffect(()=>{
-  //   if(!dloading){
-  //     currInpt == "pay" && payVal && getQuote(payVal, "pay") 
-  //     currInpt == "rec" && recVal && getQuote(recVal, "rec")
-  //   }
-  // },[dloading])
+  useEffect(()=>{
+    !payVal && recVal && currInpt == "pay" && setRecVal("")
+    !recVal && payVal && currInpt == "rec" && setPayVal("")
+  },[payVal, recVal])
 
   return (
     <div className="sw">
