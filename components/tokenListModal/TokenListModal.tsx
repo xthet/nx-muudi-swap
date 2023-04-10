@@ -35,7 +35,7 @@ export default function TokenListModal({ offMe, tokens, type, selTkn }:props) {
       }
     })
 
-    setTknArr(qTknsArr)
+    setTknArr(qTknsArr.sort((a,b)=>{return a.name.localeCompare(b.name)}))
   }
 
   useEffect(()=>{
@@ -55,7 +55,7 @@ export default function TokenListModal({ offMe, tokens, type, selTkn }:props) {
             {tknArr.slice(0,offset).map((token, index)=>{
               return (
                 <div key={index} className="tlm-tkn-grp" onClick={()=>{selTkn(token); offMe()}}>
-                  <img src={token.logoURI} alt="tkn_img" className="tlm-tkn-img"/>
+                  <img src={token.logoURI} alt=".." className="tlm-tkn-img"/>
                   <span className="tlm-tkn-name">{token.name.length > 10 ? token.name.substring(0,10) + "..." : token.name}</span>
                   <span className="tlm-tkn-sym">{token.symbol}</span>
                 </div>

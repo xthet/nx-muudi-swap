@@ -4,7 +4,7 @@ import { conn, gtkn, oTx } from "@/types"
 import { faEthereum } from "@fortawesome/free-brands-svg-icons"
 import { faChevronDown, faSliders } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useContext, useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import { TokenListModal } from "../exportComps"
 import { ethers } from "ethers"
 

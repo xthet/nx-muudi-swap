@@ -1,10 +1,8 @@
-import Head from "next/head"
-import Image from "next/image"
-import { Inter } from "next/font/google"
 import { Swapper } from "@/components/exportComps"
+import Head from "next/head"
 
 export const getStaticProps = async () => {
-  const response = await fetch("https://tokens.coingecko.com/uniswap/all.json").then(res=>res.json())
+  const response = await fetch("https://wispy-bird-88a7.uniswap.workers.dev/?url=http://tokens.1inch.eth.link").then(res=>res.json())
 
   return {
     props: {
