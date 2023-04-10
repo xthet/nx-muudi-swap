@@ -23,6 +23,8 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   const [payRec, setPayRec] = useState("pay")
   const [payTkn, setPayTkn] = useState<gtkn>(ethTkn)
   const [recTkn, setRecTkn] = useState<gtkn|any>({})
+  const [payUSDRate, setPayUSDRate] = useState("")
+  const [recUSDRate, setRecUSDRate] = useState("")
 
   async function getQuote(value:string, type:string){
     const exchangeList = "Uniswap_V3"
@@ -37,7 +39,10 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
       try {
         const response = await fetch(
           `https://api.0x.org/swap/v1/price?sellToken=${params.sellToken}&buyToken=${params.buyToken}&${type == "pay" ? "sellAmount=" + params.sellAmount : "buyAmount=" + params.buyAmount }&includedSources=${params.includedSources}`,
-        ).then(res=>res.json()).then(data=>console.log(data))
+        ).then(res=>res.json()).then((data)=>{
+          setPayUSDRate(Number(parseFloat(data.sellTokenToEthRate).toFixed(2)).toLocaleString())
+          setRecUSDRate(Number(parseFloat(data.buyTokenToEthRate).toFixed(2)).toLocaleString())
+        })
         console.log("Uniswap Quote",)
       } catch (err) {
         console.error(err)
@@ -80,7 +85,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
                 </div>
               </div>
               <div className="sw-doll-eq">
-                {"$1,072.32"}
+                {"$" + payUSDRate}
               </div>
             </div>
           </div>
