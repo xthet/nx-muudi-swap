@@ -74,6 +74,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   useEffect(()=>{
     if(isConnected && payTkn && payTkn.address){
       findBalance()
+      setRprice("")
     }
   },[isConnected, payTkn])
 
@@ -88,8 +89,16 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   },[])
 
   useEffect(()=>{
-    !payVal && recVal && currInpt == "pay" && setRecVal("")
-    !recVal && payVal && currInpt == "rec" && setPayVal("")
+    if(!payVal && recVal && currInpt == "pay"){
+      setRecVal("")
+      setRecUSDRate("")
+      setPayUSDRate("")
+    } 
+    else if(!recVal && payVal && currInpt == "rec"){
+      setPayVal("")
+      setRecUSDRate("")
+      setPayUSDRate("")
+    }
   },[payVal, recVal])
 
   return (
@@ -141,7 +150,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
           <div className="sw-inpt-grp">
             <div className="sw-py-max-grp">
               <span className="sw-py">{"RECEIVE"}</span>
-              <span className="sw-py">{recTkn && recTkn.symbol && `${rprice && "1"} ${recTkn.symbol.substring(0,4)} = ${Number(rprice).toFixed(4)} ${payTkn.symbol.substring(0,4)}`}</span>
+              <span className="sw-py">{recTkn && recTkn.symbol && `${rprice && "1 "} ${recTkn.symbol.substring(0,4)} = ${rprice && Number(rprice).toFixed(4)} ${payTkn.symbol.substring(0,4)}`}</span>
             </div>
             <div className="sw-inpt-cont">
               <div className="sw-inpt-box">

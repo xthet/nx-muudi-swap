@@ -2,11 +2,18 @@ import { Swapper } from "@/components/exportComps"
 import Head from "next/head"
 
 export const getStaticProps = async () => {
-  const response = await fetch("https://wispy-bird-88a7.uniswap.workers.dev/?url=http://tokens.1inch.eth.link").then(res=>res.json())
+  const response = await fetch("https://wispy-bird-88a7.uniswap.workers.dev/?url=http://tokens.1inch.eth.link")
+  const data = await response.json()
+
+  if (!data) {
+    return {
+      notFound: true,
+    }
+  }
 
   return {
     props: {
-      tkns: response
+      tkns: data
     }
   }
 }
