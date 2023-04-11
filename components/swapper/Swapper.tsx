@@ -1,5 +1,6 @@
 import { ConnectionContext } from "@/contexts/connection"
 import useAlphaRouter from "@/hooks/useAlphaRouter"
+import UNISWAP from "@uniswap/sdk"
 import { conn, gtkn, oTx } from "@/types"
 import { faEthereum } from "@fortawesome/free-brands-svg-icons"
 import { faChevronDown, faSliders } from "@fortawesome/free-solid-svg-icons"
@@ -8,6 +9,8 @@ import { useContext, useState, useEffect } from "react"
 import { TokenListModal } from "../exportComps"
 import { ethers } from "ethers"
 import ERC20 from "@/constants/abis/ERC20.json"
+import { UNISWAP_ROUTERV2_ADDRESS } from "@/constants/constants"
+import { Fetcher, Token, Route, Trade, TokenAmount, TradeType, Percent } from "@uniswap/sdk"
 
 const ethTkn:gtkn = {
   chainId: 1,
@@ -19,7 +22,7 @@ const ethTkn:gtkn = {
 }
 
 export default function Swapper({ tokens }:{tokens:any[]}) {
-  const { isConnected, signer, account }:conn = useContext(ConnectionContext)!
+  const { isConnected, signer, account, provider }:conn = useContext(ConnectionContext)!
   const [showTLM, setShowTLM] = useState(false)
   const [payRec, setPayRec] = useState("pay")
   const [currInpt, setCurrInpt] = useState("")
@@ -68,6 +71,32 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
       } catch (err) {
         console.error(err)
       }
+    }
+  }
+
+  async function approveRouter(payTkn:gtkn, amount:string){
+    const erc20 = new ethers.Contract(payTkn.address, ERC20.abi, signer)
+    try {
+      const approveTx = await erc20.approve(UNISWAP_ROUTERV2_ADDRESS, ethers.utils.parseUnits(amount, payTkn.decimals))
+      await approveTx.wait(1)
+      return true
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+  }
+
+  async function swap(recTkn:gtkn, payTkn:gtkn, amount:string, slippage = "50"){
+    const approved = await approveRouter(payTkn, amount)
+    const rTkn = new Token(UNISWAP.ChainId.MAINNET, recTkn.address, recTkn.decimals)
+    const pTkn = new Token(UNISWAP.ChainId.MAINNET, payTkn.address, payTkn.decimals)
+    try {
+      const pair = await Fetcher.fetchPairData(rTkn, pTkn, provider)
+      const route = await new Route([pair], pTkn)
+      let amountIn = ethers.utils.parseEther(amount)
+      const slipTol = new Percent(slippage, "10000")
+    } catch (error) {
+      console.log(error)
     }
   }
 
