@@ -25,22 +25,15 @@ export default function TokenListModal({ offMe, tokens, type, selTkn }:props) {
   })
 
   function findInput(val:string){
-    let qMatch:gtkn = { name:"",address:"",symbol:"",decimals:0,logoURI:"",chainId:1 }
     let qTknsArr:gtkn[] = tokens.filter(token=>{
       if(val == ""){return token}
       else if(token.name.toLowerCase() == val.toLowerCase() || token.symbol.toLowerCase() == val.toLowerCase()){
-        qMatch = token
         return token
       }
       else if(token.name.toLowerCase().includes(val.toLowerCase()) || token.symbol.toLowerCase().includes(val.toLowerCase())){
         return token
       }
     })
-
-    if(qMatch.name != ""){
-      qTknsArr.splice(qTknsArr.indexOf(qMatch),1)
-      qTknsArr.unshift(qMatch)
-    }
     setTknArr(qTknsArr.sort((a,b)=>{return a.name.localeCompare(b.name)}))
   }
 
