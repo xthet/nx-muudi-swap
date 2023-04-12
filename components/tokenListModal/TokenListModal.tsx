@@ -25,16 +25,17 @@ export default function TokenListModal({ offMe, tokens, type, selTkn }:props) {
   })
 
   function findInput(val:string){
+    let exactArr:gtkn[] = []
     let qTknsArr:gtkn[] = tokens.filter(token=>{
       if(val == ""){return token}
       else if(token.name.toLowerCase() == val.toLowerCase() || token.symbol.toLowerCase() == val.toLowerCase()){
-        return token
+        exactArr.push(token)
       }
       else if(token.name.toLowerCase().includes(val.toLowerCase()) || token.symbol.toLowerCase().includes(val.toLowerCase())){
         return token
       }
     })
-    setTknArr(qTknsArr.sort((a,b)=>{return a.name.localeCompare(b.name)}))
+    setTknArr([...exactArr, ...qTknsArr])
   }
 
   useEffect(()=>{
