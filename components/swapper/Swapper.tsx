@@ -220,6 +220,20 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
     }
   },[payVal, recVal])
 
+  useEffect(()=>{
+    if(payRec == "pay"){
+      const persist = recVal
+      // setPayVal("")
+      getQuote(recVal, "rec")
+      // setRecVal(persist)
+    }else if(payRec == "rec"){
+      // const persist = payVal
+      // setRecVal("")
+      getQuote(payVal, "pay")
+      // setPayVal(persist)
+    }
+  },[payTkn, recTkn])
+
   return (
     <div className="sw">
       <div className="sw-menu">
