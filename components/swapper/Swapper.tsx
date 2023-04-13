@@ -222,9 +222,9 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
 
   useEffect(()=>{
     if(currInpt == "pay"){
-      getQuote(recVal, "rec")
-    }else if(currInpt == "rec"){
       getQuote(payVal, "pay")
+    }else if(currInpt == "rec"){
+      getQuote(recVal, "rec")
     }
   },[payTkn, recTkn])
 
