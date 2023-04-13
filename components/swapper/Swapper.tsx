@@ -1,27 +1,17 @@
-import { ConnectionContext } from "@/contexts/connection"
-import useAlphaRouter from "@/hooks/useAlphaRouter"
-import UNISWAP from "@uniswap/sdk"
-import JSBI from "jsbi"
-import { conn, gtkn, oTx } from "@/types"
-import { faEthereum } from "@fortawesome/free-brands-svg-icons"
-import { faChevronDown, faSliders } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useContext, useState, useEffect } from "react"
-import { TokenListModal } from "../exportComps"
-import { BigNumber, ethers } from "ethers"
 import ERC20 from "@/constants/abis/ERC20.json"
 import UniswapRouterABI from "@/constants/abis/UniswapRouterV2.json"
-import { UNISWAP_ROUTERV2_ADDRESS } from "@/constants/constants"
-import { Fetcher, Token, Route, Trade, TokenAmount, TradeType, Percent, WETH } from "@uniswap/sdk"
+import { UNISWAP_ROUTERV2_ADDRESS, defTkn, ethTkn } from "@/constants/constants"
+import { ConnectionContext } from "@/contexts/connection"
+import { conn, gtkn } from "@/types"
+import { faChevronDown, faSliders } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import UNISWAP, { Fetcher, Percent, Route, Token, TokenAmount, Trade, TradeType, WETH } from "@uniswap/sdk"
+import { BigNumber, ethers } from "ethers"
+import JSBI from "jsbi"
+import { useContext, useEffect, useState } from "react"
+import { TokenListModal } from "../exportComps"
 
-const ethTkn:gtkn = {
-  chainId: 1,
-  name: "Ethereum",
-  symbol: "ETH",
-  decimals: 18,
-  address: "",
-  logoURI: "/assets/eth_logo.png"
-}
+
 
 export default function Swapper({ tokens }:{tokens:any[]}) {
   const { isConnected, signer, account, provider }:conn = useContext(ConnectionContext)!
@@ -29,7 +19,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   const [payRec, setPayRec] = useState("pay")
   const [currInpt, setCurrInpt] = useState("")
   const [payTkn, setPayTkn] = useState<gtkn>(ethTkn)
-  const [recTkn, setRecTkn] = useState<gtkn|any>({})
+  const [recTkn, setRecTkn] = useState<gtkn>(defTkn)
   const [payVal, setPayVal] = useState("")
   const [recVal, setRecVal] = useState("")
   const [rprice, setRprice] = useState("")
@@ -38,6 +28,19 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   const [dloading, setDloading] = useState(false)
   const [pBal, setPBal] = useState("")
   const [ethPrice, setEthPrice] = useState("")
+
+  async function checkSwap(){
+    switch(currInpt){
+    case "pay":
+      if(payTkn.name == "Ethereum"){
+        await swap(recTkn, payTkn, payVal, "EET")
+      }else{await swap(recTkn, payTkn, payVal, "ETT")}
+    case "rec":
+      if(recTkn.name == "Ethereum"){
+        await swap(recTkn, payTkn, recVal, "TEE")
+      }else{await swap(recTkn, payTkn, recVal, "TET")}
+    }
+  }
 
   async function findBalance(){
     const erc20Ctrt = new ethers.Contract(payTkn.address, ERC20.abi, signer)
@@ -54,8 +57,8 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
     const exchangeList = "Uniswap_V3"
     if(payTkn.name && recTkn && recTkn.name && value && value != "0"){
       const params = {
-        buyToken: recTkn.address,
-        sellToken: payTkn.address,
+        buyToken: recTkn.address ? recTkn.address : recTkn.symbol,
+        sellToken: payTkn.address ? payTkn.address : payTkn.symbol,
         sellAmount: type == "pay" ? (Number(value) * Math.pow(10,payTkn.decimals)).toString() : "",
         buyAmount: type == "rec" ? (Number(value) * Math.pow(10,recTkn.decimals)).toString() : "",
         includedSources: exchangeList,
@@ -89,10 +92,9 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
     }
   }
 
-  async function swap(getTkn:gtkn, giveTkn:gtkn, amount:string, slippage = "50", type:"ETT"|"TET"|"EET"|"TEE"){
+  async function swap(getTkn:gtkn, giveTkn:gtkn, amount:string, type:"ETT"|"TET"|"EET"|"TEE", slippage = "50", deadline = Math.floor(Date.now() / 1000) + (60 * 20)){
     const approved = await approveRouter(giveTkn, amount)
     const routerCtrt = new ethers.Contract(UNISWAP_ROUTERV2_ADDRESS, UniswapRouterABI.abi, signer)
-    const deadline = Math.floor(Date.now() / 1000) + (60 * 20) // 20mins
 
     async function swapETT(){
       const rTkn = new Token(UNISWAP.ChainId.MAINNET, getTkn.address, getTkn.decimals)
@@ -109,7 +111,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
       // ETT
       const swapETT = await routerCtrt.swapExactTokensForTokens(amountIn, amountOutMinHex, path, account, deadline)
       const swapETTR = await swapETT.wait(1)
-      console.log(swapETT, swapETTR)
+      console.log(swapETTR, swapETTR)
     }
 
     async function swapTET(){
@@ -127,7 +129,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
       // TET
       const swapTET = await routerCtrt.swapTokensForExactTokens(amountOut, amountInMaxHex, path, account, deadline)
       const swapTETR = await swapTET.wait(1)
-      console.log(swapETT, swapTETR)
+      console.log(swapTETR, swapTETR)
     }
 
     async function swapEET(){
@@ -147,7 +149,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
       // EET
       const swapEET = await routerCtrt.swapExactETHForTokens(amountOutMinHex, path, account, deadline, { value:valueHex })
       const swapEETR = await swapEET.wait(1)
-      console.log(swapETT, swapEETR)
+      console.log(swapEETR, swapEETR)
     }
 
     async function swapTEE(){
@@ -163,9 +165,9 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
       const path = [pTkn.address, rTkn.address]
 
       // TEE
-      const swapTET = await routerCtrt.swapTokensForExactETH(amountOut, amountInMaxHex, path, account, deadline)
-      const swapTETR = await swapTET.wait(1)
-      console.log(swapETT, swapTETR)
+      const swapTEE = await routerCtrt.swapTokensForExactETH(amountOut, amountInMaxHex, path, account, deadline)
+      const swapTEER = await swapTEE.wait(1)
+      console.log(swapTEER, swapTEER)
     }
 
     if(approved){ 
@@ -208,11 +210,13 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
       setRecVal("")
       setRecUSDRate("")
       setPayUSDRate("")
+      setRprice("")
     } 
     else if(!recVal && payVal && currInpt == "rec"){
       setPayVal("")
       setRecUSDRate("")
       setPayUSDRate("")
+      setRprice("")
     }
   },[payVal, recVal])
 
@@ -237,12 +241,16 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
           <div className="sw-inpt-grp">
             <div className="sw-py-max-grp">
               <span className="sw-py">{"PAY"}</span>
-              <span className="sw-max">{`${payTkn && pBal ? "MAX: " + pBal + " " + payTkn.symbol : ""}`}</span>
+              <span className="sw-max">
+                {`${payTkn && pBal ? "MAX: " + pBal + " " + payTkn.symbol : ""}`}
+              </span>
             </div>
             <div className="sw-inpt-cont">
               <div className="sw-inpt-box">
                 <input type="number" className="sw-inpt" 
-                  onChange={(e)=>{setPayVal(e.target.value); setCurrInpt("pay"); !dloading ? getQuote(e.target.value, "pay") : setTimeout(()=>{getQuote(e.target.value, "pay")},1000)}} 
+                  onChange={(e)=>{setPayVal(e.target.value) 
+                    setCurrInpt("pay"); !dloading ? getQuote(e.target.value, "pay") 
+                      : setTimeout(()=>{getQuote(e.target.value, "pay")},1000)}} 
                   value={payVal}
                   style={dloading && currInpt == "rec" ? { "opacity":"0.6" } : {}}
                 />
@@ -251,7 +259,9 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
                     <img src={payTkn.logoURI} alt="tkn" className="sw-tkn-lg"/>
                     <span className="sw-tkn-name">{payTkn.symbol.substring(0,4)}</span>
                   </div>
-                  <FontAwesomeIcon icon={faChevronDown} className="sw-tkn-sel-icon" onClick={()=>{setShowTLM(true); setPayRec("pay")}}/>
+                  <FontAwesomeIcon icon={faChevronDown} 
+                    className="sw-tkn-sel-icon" onClick={()=>{setShowTLM(true); setPayRec("pay")}}
+                  />
                 </div>
               </div>
               <div className="sw-doll-eq">
@@ -260,28 +270,40 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
             </div>
           </div>
 
-          {showTLM && <TokenListModal offMe={()=>{setShowTLM(false)}} tokens={tokens} type={payRec} selTkn={payRec == "pay" ? setPayTkn : setRecTkn}/>}
+          {showTLM && 
+            <TokenListModal offMe={()=>{setShowTLM(false)}} 
+              tokens={tokens} selTkn={payRec == "pay" ? setPayTkn : setRecTkn}
+              insetTkn={payRec == "pay" ? recTkn : payTkn}
+            />}
 
           <div className="sw-inpt-grp">
             <div className="sw-py-max-grp">
               <span className="sw-py">{"RECEIVE"}</span>
-              <span className="sw-py">{recTkn && recTkn.symbol && `${rprice && "1 "} ${recTkn.symbol.substring(0,4)} = ${rprice && Number(rprice).toFixed(4)} ${payTkn.symbol.substring(0,4)}`}</span>
+              <span className="sw-py">
+                {recTkn.symbol !== "Select a token" && `${rprice && "1 "} 
+                ${recTkn.symbol.substring(0,4)} ${rprice ? "=" : ":"} ${rprice && Number(rprice).toFixed(4)} 
+                ${payTkn.symbol.substring(0,4)}`}
+              </span>
             </div>
             <div className="sw-inpt-cont">
               <div className="sw-inpt-box">
                 <input type="number" className="sw-inpt" 
-                  onChange={(e)=>{setRecVal(e.target.value); setCurrInpt("rec"); !dloading ? getQuote(e.target.value, "rec") : setTimeout(()=>{getQuote(e.target.value, "rec")},1000)}} 
+                  onChange={(e)=>{setRecVal(e.target.value); setCurrInpt("rec")
+                    !dloading ? getQuote(e.target.value, "rec") 
+                      : setTimeout(()=>{getQuote(e.target.value, "rec")},1000)}} 
                   value={recVal}
                   style={dloading && currInpt == "pay" ? { "opacity":"0.6" } : {}}
                 />
                 <div className="sw-tkn-sel">
                   <div className="sw-selected-tkn">
-                    {recTkn && recTkn.logoURI && recTkn.symbol ? <>
+                    {recTkn.name !== "Select a token" ? <>
                       <img src={recTkn.logoURI} alt="tkn" className="sw-tkn-lg"/>
                       <span className="sw-tkn-name">{recTkn.symbol.substring(0,4)}</span>
                     </> : <span className="sw-tkn-noTkn">{"Select a token"}</span>}
                   </div>
-                  <FontAwesomeIcon icon={faChevronDown} className="sw-tkn-sel-icon" onClick={()=>{setShowTLM(true); setPayRec("rec")}}/>
+                  <FontAwesomeIcon icon={faChevronDown} 
+                    className="sw-tkn-sel-icon" onClick={()=>{setShowTLM(true); setPayRec("rec")}}
+                  />
                 </div>
               </div>
               <div className="sw-doll-eq">
@@ -291,7 +313,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
           </div>
         </div>
         <div className="sw-swap-cta">
-          <button className="sw-swap-btn" disabled={!isConnected}>
+          <button className="sw-swap-btn" disabled={!isConnected} onClick={()=>{checkSwap()}}>
             {isConnected ? "SWAP" : "Connect wallet"}
           </button>
         </div>
