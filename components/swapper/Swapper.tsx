@@ -196,7 +196,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
       const path = [pTkn.address, rTkn.address]
 
       // ETHET
-      const swapETHET = await routerCtrt.swapETHForExactTokens(amountOut, amountInMaxHex, path, account, deadline, { value:amountInMaxHex })
+      const swapETHET = await routerCtrt.swapETHForExactTokens(amountOut, path, account, deadline, { value:amountInMaxHex })
       const swapETHETR = await swapETHET.wait(1)
       console.log(swapETHETR, swapETHET)
     }
@@ -237,6 +237,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
         }
       } catch (error) {
         console.log(error)
+        setDisableSwap(false)
       }
     }else{console.log(provider)}
   }

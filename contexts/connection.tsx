@@ -33,7 +33,6 @@ function ConnectionProvider ({ children }:props) {
         await window.ethereum.request({ method: "eth_requestAccounts" })
         setIsConnected(true)
         const provider = new ethers.providers.Web3Provider(window.ethereum)
-        console.log(provider)
         provider && setProvider(provider)
         const signer = await provider.getSigner()
         setSigner(signer)
@@ -57,6 +56,7 @@ function ConnectionProvider ({ children }:props) {
         {
           setIsConnected(true)
           const provider = new ethers.providers.Web3Provider(window.ethereum)
+          provider && setProvider(provider)
           const balance = await provider.getBalance(accounts[0])
           const signer = await provider.getSigner()
           setSigner(signer)
