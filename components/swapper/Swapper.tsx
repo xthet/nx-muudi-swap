@@ -105,7 +105,6 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   }
 
   async function swap(getTkn:gtkn, giveTkn:gtkn, amount:string, type:"ETT"|"TET"|"EET"|"TEE"|"ETHET"|"ETETH", slippage = defSlp, deadline = defDeadline){
-    console.log(ChainId.MAINNET)
     setDisableSwap(true)
     const approved = await approveRouter(giveTkn, amount)
     const routerCtrt = new ethers.Contract(UNISWAP_ROUTERV2_ADDRESS, UniswapRouterABI.abi, signer)
@@ -220,7 +219,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
       console.log(swapETETH, swapETETHR)
     }
 
-    if(approved){ 
+    if(approved && provider && signer){ 
       try {
         switch(type){
         case "ETT":
@@ -239,7 +238,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
       } catch (error) {
         console.log(error)
       }
-    }
+    }else{console.log(provider)}
   }
 
   useEffect(()=>{
@@ -381,7 +380,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
           </div>
         </div>
         <div className="sw-swap-cta">
-          <button className="sw-swap-btn" disabled={!isConnected && disableSwap} onClick={()=>{checkSwap()}}>
+          <button className="sw-swap-btn" disabled={!isConnected || disableSwap} onClick={()=>{checkSwap()}}>
             {isConnected ? "SWAP" : "Connect wallet"}
           </button>
         </div>
