@@ -67,8 +67,8 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
         const response = await fetch(
           `https://api.0x.org/swap/v1/price?sellToken=${params.sellToken}&buyToken=${params.buyToken}&${type == "pay" ? "sellAmount=" + params.sellAmount : "buyAmount=" + params.buyAmount }&includedSources=${params.includedSources}`,
         ).then(res=>res.json()).then((data)=>{
-          setPayUSDRate(Number((((Number(data.sellAmount) / (Math.pow(10,payTkn.decimals))) / Number(data.sellTokenToEthRate)) * Number(ethPrice)).toFixed(2)).toLocaleString())
-          setRecUSDRate(Number((((Number(data.buyAmount) / (Math.pow(10,recTkn.decimals))) / Number(data.buyTokenToEthRate)) * Number(ethPrice)).toFixed(2)).toLocaleString())
+          setPayUSDRate(((Number((((Number(data.sellAmount) / (Math.pow(10,payTkn.decimals))) / Number(data.sellTokenToEthRate)) * Number(ethPrice)).toFixed(2))) || "").toLocaleString())
+          setRecUSDRate(((Number((((Number(data.buyAmount) / (Math.pow(10,recTkn.decimals))) / Number(data.buyTokenToEthRate)) * Number(ethPrice)).toFixed(2))) || "").toLocaleString())
           type == "pay" ? setRecVal((Number(data.buyAmount) / (Math.pow(10,recTkn.decimals))).toFixed(4)) : setPayVal((Number(data.sellAmount) / (Math.pow(10,payTkn.decimals))).toFixed(4))
           setRprice((type == "pay" ? 1 / Number(data.price) : Number(data.price)).toFixed(4))
         })

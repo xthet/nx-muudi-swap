@@ -15,12 +15,22 @@
   @include fl-c
 
 .tlm
-  position: absolute
+  position: fixed
+  top: calc((100vh - 80vh)/2)
   width: 30vw
-  height: 35vw
+  height: 70vh
   @include fl-tl
   @include fl-c
   z-index: 20
+  @media(max-width: $md)
+    width: 34vw
+    // height: 40vw
+  @media(max-width: $sm)
+    width: 55vw
+    // height: 72vw
+  @media(max-width: $vsm)
+    width: 100vw
+    // height: 60vh  
 
 .tlm-box
   @include fl-tl
@@ -54,7 +64,6 @@
   background: none
   outline: none
   @include fl-cl
-  // @include fl-sb
   gap: 1rem
 
 .tlm-search-icon
@@ -139,12 +148,16 @@
 
 .tlm-trz
   position: absolute
-  width: 160px
+  width: 11.1vw
   height: 40px
   background: #000
   border: 1px solid $color-text
   border-top: none
   border-radius: 0 0 0.5rem 0.5rem
+  @media(max-width: $md)
+    width: 15vw  
+  @media(max-width: $sm)
+    width: 18vw
 
 .tlm-trz-skw
   @extend .tlm-trz

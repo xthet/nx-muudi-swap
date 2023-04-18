@@ -58,7 +58,7 @@ export default function TokenListModal({ offMe, tokens, insetTkn, selTkn }:props
   },[tokens])
 
   return (
-    <div className="tlm-cont">
+    <>
       <div className="tlm-reactive" onClick={()=>{offMe()}}>
       </div>
       <div className="tlm">
@@ -110,6 +110,6 @@ export default function TokenListModal({ offMe, tokens, insetTkn, selTkn }:props
           <div className="tlm-trz-txt">{":987_tokens:"}</div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
