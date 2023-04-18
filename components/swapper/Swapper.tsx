@@ -239,7 +239,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
         console.log(error)
         setDisableSwap(false)
       }
-    }else{console.log(provider)}
+    }
   }
 
   useEffect(()=>{
