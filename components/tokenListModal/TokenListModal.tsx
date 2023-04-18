@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 import useInfiniteScroll from "react-infinite-scroll-hook"
 import popTokens from "@/constants/popTokens.json"
 import { ethTkn } from "@/constants/constants"
+import { useMediaQuery } from "react-responsive"
 
 interface props {
   offMe:Function
@@ -14,6 +15,7 @@ interface props {
 }
 
 export default function TokenListModal({ offMe, tokens, insetTkn, selTkn }:props) {
+  const isVSmallScreen = useMediaQuery({ query: "(max-width: 600px)" })
   const [loading, setLoading] = useState(false)
   const [hasNext, setHasNext] = useState(true)
   const [error, setError] = useState(false)
@@ -104,11 +106,11 @@ export default function TokenListModal({ offMe, tokens, insetTkn, selTkn }:props
               </div>}
           </div>
         </div>
-        <div className="tlm-edge">
+        {!isVSmallScreen && <div className="tlm-edge">
           <div className="tlm-trz"></div>
           <div className="tlm-trz-skw"></div>
           <div className="tlm-trz-txt">{":987_tokens:"}</div>
-        </div>
+        </div>}
       </div>
     </>
   )

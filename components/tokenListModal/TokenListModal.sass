@@ -1,7 +1,3 @@
-.tlm-cont
-  @include fl-cc
-  @include fl-c 
-
 .tlm-reactive
   position: fixed
   top: 0
@@ -9,28 +5,36 @@
   left: 0
   bottom: 0
   width: 100%
-  z-index: 17
+  z-index: 19
   background: rgba(0,0,0,0.4)
   @include fl-cc
   @include fl-c
 
 .tlm
   position: fixed
-  top: calc((100vh - 80vh)/2)
+  top: calc((100vh - 32vw)/2)
   width: 30vw
-  height: 70vh
+  height: 30vw
   @include fl-tl
   @include fl-c
   z-index: 20
+  @media(max-width: $lg)
+    top: calc((100vh - 45vw)/2)
+    width: 40vw  
+    height: 40vw
   @media(max-width: $md)
-    width: 34vw
-    // height: 40vw
+    top: calc((100vh - 55vw)/2)
+    width: 50vw
+    height: 50vw
   @media(max-width: $sm)
-    width: 55vw
-    // height: 72vw
+    top: calc((100vh - 85vw)/2)
+    width: 82vw
+    height: 82vw
   @media(max-width: $vsm)
+    top: unset
+    bottom: 0
     width: 100vw
-    // height: 60vh  
+    height: 120vw
 
 .tlm-box
   @include fl-tl

@@ -25,8 +25,21 @@ body
     font-size: 0.8rem
 
 div, section, article 
-  scrollbar-color: #FF9326 #AD5B09 !important
+  scrollbar-color: #FF9326 #000 !important
   scrollbar-width: thin !important
+
+::-webkit-scrollbar-track 
+  margin-block: 1em
+
+::-webkit-scrollbar 
+  width: 16px
+
+::-webkit-scrollbar-thumb 
+  background: #FF9326
+  border-radius: 10px
+  background-clip: content-box
+  border: 6px solid transparent
+
 
 a 
   color: unset
@@ -87,7 +100,7 @@ input[type=number]
     border-right: none
 
 .-trz-morph
-  background: $color-sub-bg
+  background: none
   border: 1px solid $color-text 
   border-bottom: none
 

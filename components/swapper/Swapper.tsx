@@ -3,7 +3,7 @@ import UniswapRouterABI from "@/constants/abis/UniswapRouterV2.json"
 import { UNISWAP_ROUTERV2_ADDRESS, defTkn, ethTkn } from "@/constants/constants"
 import { ConnectionContext } from "@/contexts/connection"
 import { conn, gtkn } from "@/types"
-import { faChevronDown, faSliders } from "@fortawesome/free-solid-svg-icons"
+import { faChevronDown, faGear, faSliders } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import UNISWAP, { Fetcher, Percent, Route, Token, TokenAmount, Trade, TradeType, WETH } from "@uniswap/sdk"
 import { BigNumber, ethers } from "ethers"
@@ -16,6 +16,7 @@ import { TokenListModal } from "../exportComps"
 export default function Swapper({ tokens }:{tokens:any[]}) {
   const { isConnected, signer, account, provider }:conn = useContext(ConnectionContext)!
   const [showTLM, setShowTLM] = useState(false)
+  const [showSM, setShowSM] = useState(false)
   const [payRec, setPayRec] = useState("pay")
   const [currInpt, setCurrInpt] = useState("")
   const [payTkn, setPayTkn] = useState<gtkn>(ethTkn)
@@ -28,6 +29,8 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   const [dloading, setDloading] = useState(false)
   const [pBal, setPBal] = useState("")
   const [ethPrice, setEthPrice] = useState("")
+  const [defSlp, setDefSlp] = useState("50")
+  const [defDeadline, SetDefDeadline] = useState(Math.floor(Date.now() / 1000) + (60 * 20))
 
   async function checkSwap(){
     switch(currInpt){
@@ -69,8 +72,8 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
         ).then(res=>res.json()).then((data)=>{
           setPayUSDRate(((Number((((Number(data.sellAmount) / (Math.pow(10,payTkn.decimals))) / Number(data.sellTokenToEthRate)) * Number(ethPrice)).toFixed(2))) || "").toLocaleString())
           setRecUSDRate(((Number((((Number(data.buyAmount) / (Math.pow(10,recTkn.decimals))) / Number(data.buyTokenToEthRate)) * Number(ethPrice)).toFixed(2))) || "").toLocaleString())
-          type == "pay" ? setRecVal((Number(data.buyAmount) / (Math.pow(10,recTkn.decimals))).toFixed(4)) : setPayVal((Number(data.sellAmount) / (Math.pow(10,payTkn.decimals))).toFixed(4))
-          setRprice((type == "pay" ? 1 / Number(data.price) : Number(data.price)).toFixed(4))
+          type == "pay" ? setRecVal((Number(data.buyAmount) / (Math.pow(10,recTkn.decimals))).toFixed(4) || "") : setPayVal((Number(data.sellAmount) / (Math.pow(10,payTkn.decimals))).toFixed(4) || "")
+          setRprice((type == "pay" ? 1 / Number(data.price) : Number(data.price)).toFixed(4) || "")
         })
         setTimeout(()=>{setDloading(false)},1000)
       } catch (err) {
@@ -92,7 +95,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
     }
   }
 
-  async function swap(getTkn:gtkn, giveTkn:gtkn, amount:string, type:"ETT"|"TET"|"EET"|"TEE", slippage = "50", deadline = Math.floor(Date.now() / 1000) + (60 * 20)){
+  async function swap(getTkn:gtkn, giveTkn:gtkn, amount:string, type:"ETT"|"TET"|"EET"|"TEE", slippage = defSlp, deadline = defDeadline){
     const approved = await approveRouter(giveTkn, amount)
     const routerCtrt = new ethers.Contract(UNISWAP_ROUTERV2_ADDRESS, UniswapRouterABI.abi, signer)
 
@@ -240,10 +243,11 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
           <div className="trz-skw -skw-right -trz-right"></div>
           <div className="trz-str -trz-right"></div>
           <div className="sw-menu-settings">
-            <FontAwesomeIcon icon={faSliders} className="sw-menu-settings-icon"/>
+            <FontAwesomeIcon icon={faGear} className="sw-menu-settings-icon" onClick={()=>{setShowSM(true)}}/>
           </div>
         </div>
       </div>
+
       <div className="sw-swap-box">
         <div className="sw-input-cont-wrapper">
           <div className="sw-inpt-grp">
@@ -289,7 +293,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
               <span className="sw-py">{"RECEIVE"}</span>
               <span className="sw-py">
                 {recTkn.symbol !== "Select a token" && `${rprice && "1 "} 
-                ${recTkn.symbol.substring(0,4)} ${rprice ? "=" : ":"} ${rprice && Number(rprice).toFixed(4)} 
+                ${recTkn.symbol.substring(0,4)} ${rprice ? "=" : ":"} ${rprice && rprice !== "NaN" ? Number(rprice).toFixed(4) : ""} 
                 ${payTkn.symbol.substring(0,4)}`}
               </span>
             </div>
