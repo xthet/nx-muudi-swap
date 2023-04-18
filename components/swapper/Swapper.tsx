@@ -242,8 +242,8 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
         <div className="trz-cont">
           <div className="trz-skw -skw-right -trz-right"></div>
           <div className="trz-str -trz-right"></div>
-          <div className="sw-menu-settings">
-            <FontAwesomeIcon icon={faGear} className="sw-menu-settings-icon" onClick={()=>{setShowSM(true)}}/>
+          <div className="sw-menu-settings" onClick={()=>{setShowSM(true)}}>
+            <FontAwesomeIcon icon={faGear} className="sw-menu-settings-icon"/>
           </div>
         </div>
       </div>

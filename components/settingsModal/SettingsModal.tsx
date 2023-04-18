@@ -9,8 +9,31 @@ interface props {
 }
 
 export default function SettingsModal({ offMe, newSlp, newDdln }:props) {
+  const defSlp = "50"
+  const defDdln = Math.floor(Date.now() / 1000) + (60 * 20) // 20mins
   const [showSlpInfo, setShowSlpInfo] = useState(false)
   const [showTxdInfo, setShowTxdInfo] = useState(false)
+  const [slpVal, setSlpVal] = useState("")
+  const [autoSlp, setAutoSlp] = useState(true)
+
+  function checkSlp(val:string){
+    setSlpVal(val)
+    if(val && Number(val)){
+      setAutoSlp(false)
+      newSlp((Number(val) * 100).toString())
+    }else{
+      setAutoSlp(true)
+      newSlp(defSlp)
+    }
+  }
+
+  function checkDdln(val:string){
+    if(val && Number(val)){
+      newDdln(Math.floor(Date.now() / 1000) + (60 * Number(val)))
+    }else{
+      newDdln(defDdln)
+    }
+  }
 
   return (
     <>
@@ -28,13 +51,15 @@ export default function SettingsModal({ offMe, newSlp, newDdln }:props) {
               <FontAwesomeIcon icon={faCircleInfo} className="sm-func-info-icon" 
                 onMouseEnter={()=>{setShowSlpInfo(true)}} onMouseLeave={()=>{setShowSlpInfo(false)}}
               />
-              {showSlpInfo && <div className="sm-func-info">{"Your transaction will revert if the price changes unfavorably past this percentage"}</div>}
+              {showSlpInfo && <div className="sm-func-info">
+                {"Your transaction will revert if the price changes unfavorably past this percentage"}
+              </div>}
             </div>
             <div className="sm-slp-wrp">
-              <button className="sm-slp-auto-btn">{"Auto"}</button>
+              <button className={`sm-slp-auto-btn ${!autoSlp && "--no-auto-slp"}`} onClick={()=>{setAutoSlp(true); setSlpVal(""); newSlp(defSlp)}}>{"Auto"}</button>
               <div className="sm-slp-inpt-wrp">
                 <div className="sm-slp-inpt-grp">
-                  <input type="number" className="sm-slp-inpt" placeholder="0.5" onChange={(e)=>{newSlp(e.target.value)}}/>
+                  <input type="number" className="sm-slp-inpt" placeholder="0.5" onChange={(e)=>{checkSlp(e.target.value)}} value={slpVal}/>
                   <span>{"%"}</span>
                 </div>
                 {/* <small>{"This value may be a little to high"}</small> */}
@@ -47,10 +72,12 @@ export default function SettingsModal({ offMe, newSlp, newDdln }:props) {
               <FontAwesomeIcon icon={faCircleInfo} className="sm-func-info-icon" 
                 onMouseEnter={()=>{setShowTxdInfo(true)}} onMouseLeave={()=>{setShowTxdInfo(false)}}
               />              
-              {showTxdInfo && <div className="sm-func-info">{"Your transaction will revert if it is pending for more than this period of time."}</div>}
+              {showTxdInfo && <div className="sm-func-info">
+                {"Your transaction will revert if it is pending for more than this period of time."}
+              </div>}
             </div>
             <div className="sm-txd-wrp">
-              <input type="number" className="sm-txd-inpt" placeholder="20" onChange={(e)=>{newDdln(Math.floor(Date.now() / 1000) + (60 * (Number(e.target.value) || 0)))}}/>
+              <input type="number" className="sm-txd-inpt" placeholder="20" onChange={(e)=>{checkDdln(e.target.value)}}/>
               <span>{"minutes"}</span>
             </div>
           </div>
