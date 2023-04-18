@@ -9,7 +9,7 @@ import UNISWAP, { Fetcher, Percent, Route, Token, TokenAmount, Trade, TradeType,
 import { BigNumber, ethers } from "ethers"
 import JSBI from "jsbi"
 import { useContext, useEffect, useState } from "react"
-import { TokenListModal } from "../exportComps"
+import { SettingsModal, TokenListModal } from "../exportComps"
 
 
 
@@ -247,6 +247,11 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
           </div>
         </div>
       </div>
+
+      {showSM && <SettingsModal 
+        offMe={()=>{setShowSM(false)}} 
+        newSlp={(val:string)=>{setDefSlp(val)}} newDdln={(val:number)=>{SetDefDeadline(val)}}
+      />}
 
       <div className="sw-swap-box">
         <div className="sw-input-cont-wrapper">
