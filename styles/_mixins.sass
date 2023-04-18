@@ -94,20 +94,24 @@
 @mixin def-faicon
   height: 2rem
   color: $color-text
+  @media (max-width: $md)
+    height: 1.7rem
+  @media (max-width: $sm)
+    height: 1.2rem    
 
 @mixin def-btn
   @include fl-cl
-  gap: 0.5rem
+  gap: 0.8rem
   outline: none
-  border: 1px solid #F6A75A
+  border: 1px solid $color-text
   border-radius: 0.25em
-  background: rgba(206, 137, 70, 0.62)
+  background: $color-sub-bg
   font-family: $font-text
+  font-weight: 600
   font-size: 1.6rem
   line-height: 1em
-  padding: 0.4em 0.9em
-  color: #FEC68F
+  padding: 0.4em 0.7em
+  color: $color-ltext
   cursor: pointer
-  transition: all 0.5s ease
   &:hover
     opacity: 0.8

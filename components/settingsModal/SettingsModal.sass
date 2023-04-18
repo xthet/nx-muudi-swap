@@ -6,27 +6,154 @@
   bottom: 0
   width: 100%
   z-index: 19
-  background: rgba(0,0,0,0.1)
+  background: rgba(0,0,0,0)
   @include fl-cc
   @include fl-c
 
 .sm-modal
+  width: 300px
   position: fixed
   margin-left: 100px
   margin-top: 45px
   z-index: 20
-  background: orange
+  background: none
   @include fl-bl
   @include fl-c
   @media(max-width: $sm)
     margin-left: 50px
 
 .sm-edge
-  width: 80px
+  position: relative
   height: 30px
-  background: blue
+  width: 90px
+
+.sm-trz
+  position: absolute
+  right: 0
+  height: 30px
+  width: 90px
+  background: #000
+  border-radius: 0.5rem 0.5rem 0 0
+  border: 1px solid $color-text
+  border-bottom: none
+
+.sm-trz-skw
+  @extend .sm-trz
+  transform: skewX(-20deg)
+  border-right: none
+  left: -8px
+
+.sm-trz-txt
+  @extend .sm-trz
+  border: none
+  background: none
+  @include def-rp
+  font-size: 1.2rem
+  @include fl-cc
+  right: 3px  
+
 
 .sm-box
-  width: 200px
-  height: 50px
-  background: salmon
+  width: 100%
+  background: #000
+  @include fl-tl
+  @include fl-c
+  gap:1rem
+  padding: 1rem
+  border: 1px solid $color-text
+  border-radius: 0.5rem 0 0.5rem 0.5rem
+
+.sm-func
+  width: 100%
+  @include fl-tl
+  @include fl-c
+  gap:1rem
+
+.sm-func-hd
+  width: 100%
+  @include fl-cl
+  gap:1rem
+  position: relative
+
+.sm-func-title
+  @include def-rp
+  font-size: 1.2rem
+
+.sm-func-info-icon
+  @include def-faicon
+  cursor: pointer
+  height: 1.2rem
+
+.sm-func-info
+  position: absolute
+  right: 145px
+  border: 1px solid #000
+  width: 230px
+  background: #000
+  border-radius: 0.4em
+  padding: 0.5em
+  @include def-rp
+  line-height: 1.4em
+  font-size: 1rem
+  z-index: 23
+
+.sm-slp-wrp
+  width: 100%
+  @include fl-cl
+  @include fl-sb
+  gap:1rem
+
+.sm-slp-auto-btn
+  @include def-btn
+  font-size: 1.2rem
+  &:disabled
+    background: none
+
+.sm-slp-inpt-wrp
+  width: 95%
+  @include fl-bl
+  @include fl-c
+  gap: 0.4rem
+  small
+    @include def-rp
+    font-size: 1rem
+
+.sm-slp-inpt-grp
+  padding: 0.3rem 0.5rem
+  width: 100%
+  border: 1px solid $color-text
+  border-radius: 0.3rem 
+  @include fl-cr
+  gap: 0.4rem
+  span
+    @include def-rp
+
+.sm-slp-inpt
+  width: 95%
+  background: none
+  border: none
+  outline: none
+  @include def-rp
+  font-size: 1.2rem
+  text-align: right
+
+.sm-txd-wrp
+  width: 100%
+  @include fl-cl
+  gap: 0.8rem
+  span
+    @include def-rp
+    font-size: 1.2rem
+
+.sm-txd-inpt
+  border: 1px solid $color-text
+  width: 8rem
+  border-radius: 0.5rem
+  padding: 0.3em
+  @include def-rp
+  font-size: 1.2rem
+  outline: none
+  background: none
+
+
+
