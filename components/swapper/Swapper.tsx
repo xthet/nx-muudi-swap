@@ -5,7 +5,7 @@ import { ConnectionContext } from "@/contexts/connection"
 import { conn, gtkn } from "@/types"
 import { faChevronDown, faGear, faSliders } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import UNISWAP, { Fetcher, Percent, Route, Token, TokenAmount, Trade, TradeType, WETH } from "@uniswap/sdk"
+import { Fetcher, Percent, Route, Token, TokenAmount, Trade, TradeType, WETH, ChainId } from "@uniswap/sdk"
 import { BigNumber, ethers } from "ethers"
 import JSBI from "jsbi"
 import { useContext, useEffect, useState } from "react"
@@ -34,15 +34,21 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   const [defDeadline, SetDefDeadline] = useState(Math.floor(Date.now() / 1000) + (60 * 20))
 
   async function checkSwap(){
-    console.log(currInpt)
     switch(currInpt){
-    case "pay":
+    case "pay": // pay exact
       if(payTkn.name == "Ethereum"){
         await swap(recTkn, payTkn, payVal, "EET")
-      }else{await swap(recTkn, payTkn, payVal, "ETT")}
+      }
+      else if(recTkn.name == "Ethereum"){
+        await swap(recTkn, payTkn, payVal, "ETETH")
+      }
+      else{await swap(recTkn, payTkn, payVal, "ETT")}
     case "rec":
       if(recTkn.name == "Ethereum"){
         await swap(recTkn, payTkn, recVal, "TEE")
+      }
+      else if(payTkn.name == "Ethereum"){
+        await swap(recTkn, payTkn, recVal, "ETHET")
       }
       else{await swap(recTkn, payTkn, recVal, "TET")}
     }
@@ -99,13 +105,14 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   }
 
   async function swap(getTkn:gtkn, giveTkn:gtkn, amount:string, type:"ETT"|"TET"|"EET"|"TEE"|"ETHET"|"ETETH", slippage = defSlp, deadline = defDeadline){
+    console.log(ChainId.MAINNET)
     setDisableSwap(true)
     const approved = await approveRouter(giveTkn, amount)
     const routerCtrt = new ethers.Contract(UNISWAP_ROUTERV2_ADDRESS, UniswapRouterABI.abi, signer)
 
     async function swapETT(){
-      const rTkn = new Token(UNISWAP.ChainId.MAINNET, getTkn.address, getTkn.decimals)
-      const pTkn = new Token(UNISWAP.ChainId.MAINNET, giveTkn.address, giveTkn.decimals)
+      const rTkn = new Token(ChainId.MAINNET, getTkn.address, getTkn.decimals)
+      const pTkn = new Token(ChainId.MAINNET, giveTkn.address, giveTkn.decimals)
       const pair = await Fetcher.fetchPairData(rTkn, pTkn, provider)
       const route = await new Route([pair], pTkn)
       let amountIn = ethers.utils.parseUnits(amount, giveTkn.decimals)
@@ -118,12 +125,12 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
       // ETT
       const swapETT = await routerCtrt.swapExactTokensForTokens(amountIn, amountOutMinHex, path, account, deadline)
       const swapETTR = await swapETT.wait(1)
-      console.log(swapETTR, swapETTR)
+      console.log(swapETT, swapETTR)
     }
 
     async function swapTET(){
-      const rTkn = new Token(UNISWAP.ChainId.MAINNET, getTkn.address, getTkn.decimals)
-      const pTkn = new Token(UNISWAP.ChainId.MAINNET, giveTkn.address, giveTkn.decimals)
+      const rTkn = new Token(ChainId.MAINNET, getTkn.address, getTkn.decimals)
+      const pTkn = new Token(ChainId.MAINNET, giveTkn.address, giveTkn.decimals)
       const pair = await Fetcher.fetchPairData(rTkn, pTkn, provider)
       const route = await new Route([pair], pTkn)
       let amountOut = ethers.utils.parseUnits(amount, getTkn.decimals)
@@ -136,11 +143,11 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
       // TET
       const swapTET = await routerCtrt.swapTokensForExactTokens(amountOut, amountInMaxHex, path, account, deadline)
       const swapTETR = await swapTET.wait(1)
-      console.log(swapTETR, swapTETR)
+      console.log(swapTETR, swapTET)
     }
 
     async function swapEET(){
-      const rTkn = new Token(UNISWAP.ChainId.MAINNET, getTkn.address, getTkn.decimals)
+      const rTkn = new Token(ChainId.MAINNET, getTkn.address, getTkn.decimals)
       const pTkn = WETH[rTkn.chainId]
       const pair = await Fetcher.fetchPairData(rTkn, pTkn, provider)
       const route = await new Route([pair], pTkn)
@@ -156,11 +163,11 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
       // EET
       const swapEET = await routerCtrt.swapExactETHForTokens(amountOutMinHex, path, account, deadline, { value:valueHex })
       const swapEETR = await swapEET.wait(1)
-      console.log(swapEETR, swapEETR)
+      console.log(swapEETR, swapEET)
     }
 
     async function swapTEE(){
-      const pTkn = new Token(UNISWAP.ChainId.MAINNET, giveTkn.address, giveTkn.decimals)
+      const pTkn = new Token(ChainId.MAINNET, giveTkn.address, giveTkn.decimals)
       const rTkn = WETH[pTkn.chainId]
       const pair = await Fetcher.fetchPairData(rTkn, pTkn, provider)
       const route = await new Route([pair], pTkn)
@@ -174,7 +181,43 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
       // TEE
       const swapTEE = await routerCtrt.swapTokensForExactETH(amountOut, amountInMaxHex, path, account, deadline)
       const swapTEER = await swapTEE.wait(1)
-      console.log(swapTEER, swapTEER)
+      console.log(swapTEER, swapTEE)
+    }
+
+    async function swapETHET(){
+      const rTkn = new Token(ChainId.MAINNET, getTkn.address, getTkn.decimals)
+      const pTkn = WETH[rTkn.chainId]
+      const pair = await Fetcher.fetchPairData(rTkn, pTkn, provider)
+      const route = await new Route([pair], pTkn)
+      let amountOut = ethers.utils.parseUnits(amount, getTkn.decimals)
+      const slipTol = new Percent(slippage, "10000") // 0.5% slipTol
+      const trade = new Trade(route, new TokenAmount(rTkn, JSBI.BigInt(amountOut)), TradeType.EXACT_OUTPUT)
+      const amountInMax = trade.maximumAmountIn(slipTol).raw
+      const amountInMaxHex = BigNumber.from(amountInMax.toString())
+      const path = [pTkn.address, rTkn.address]
+
+      // ETHET
+      const swapETHET = await routerCtrt.swapETHForExactTokens(amountOut, amountInMaxHex, path, account, deadline, { value:amountInMaxHex })
+      const swapETHETR = await swapETHET.wait(1)
+      console.log(swapETHETR, swapETHET)
+    }
+
+    async function swapETETH(){
+      const pTkn = new Token(ChainId.MAINNET, giveTkn.address, giveTkn.decimals)
+      const rTkn = WETH[pTkn.chainId]
+      const pair = await Fetcher.fetchPairData(rTkn, pTkn, provider)
+      const route = await new Route([pair], pTkn)
+      let amountIn = ethers.utils.parseUnits(amount, giveTkn.decimals)
+      const slipTol = new Percent(slippage, "10000") // 0.5% slipTol
+      const trade = new Trade(route, new TokenAmount(pTkn, JSBI.BigInt(amountIn)), TradeType.EXACT_INPUT)
+      const amountOutMin = trade.minimumAmountOut(slipTol).raw
+      const amountOutMinHex = BigNumber.from(amountOutMin.toString())
+      const path = [pTkn.address, rTkn.address]
+
+      // ETETH
+      const swapETETH = await routerCtrt.swapExactTokensForETH(amountIn, amountOutMinHex, path, account, deadline)
+      const swapETETHR = await swapETETH.wait(1)
+      console.log(swapETETH, swapETETHR)
     }
 
     if(approved){ 
@@ -188,6 +231,10 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
           await swapEET()
         case "TEE":
           await swapTEE()
+        case "ETETH":
+          await swapETETH()
+        case "ETHET":
+          await swapETHET()
         }
       } catch (error) {
         console.log(error)
