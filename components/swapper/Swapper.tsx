@@ -15,6 +15,7 @@ import { SettingsModal, TokenListModal } from "../exportComps"
 
 export default function Swapper({ tokens }:{tokens:any[]}) {
   const { isConnected, signer, account, provider }:conn = useContext(ConnectionContext)!
+  const [disableSwap, setDisableSwap] = useState(false)
   const [showTLM, setShowTLM] = useState(false)
   const [showSM, setShowSM] = useState(false)
   const [payRec, setPayRec] = useState("pay")
@@ -33,6 +34,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   const [defDeadline, SetDefDeadline] = useState(Math.floor(Date.now() / 1000) + (60 * 20))
 
   async function checkSwap(){
+    console.log(currInpt)
     switch(currInpt){
     case "pay":
       if(payTkn.name == "Ethereum"){
@@ -96,6 +98,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   }
 
   async function swap(getTkn:gtkn, giveTkn:gtkn, amount:string, type:"ETT"|"TET"|"EET"|"TEE", slippage = defSlp, deadline = defDeadline){
+    setDisableSwap(true)
     const approved = await approveRouter(giveTkn, amount)
     const routerCtrt = new ethers.Contract(UNISWAP_ROUTERV2_ADDRESS, UniswapRouterABI.abi, signer)
 
@@ -330,7 +333,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
           </div>
         </div>
         <div className="sw-swap-cta">
-          <button className="sw-swap-btn" disabled={!isConnected} onClick={()=>{checkSwap()}}>
+          <button className="sw-swap-btn" disabled={!isConnected && disableSwap} onClick={()=>{checkSwap()}}>
             {isConnected ? "SWAP" : "Connect wallet"}
           </button>
         </div>
