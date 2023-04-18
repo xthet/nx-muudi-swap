@@ -93,11 +93,15 @@
 
 @mixin def-faicon
   height: 2rem
+  color: $color-text  
+
+@mixin def-rfaicon
+  height: 2rem
   color: $color-text
   @media (max-width: $md)
     height: 1.7rem
   @media (max-width: $sm)
-    height: 1.2rem    
+    height: 1.2rem      
 
 @mixin def-btn
   @include fl-cl

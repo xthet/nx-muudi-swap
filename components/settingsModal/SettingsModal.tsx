@@ -34,7 +34,7 @@ export default function SettingsModal({ offMe, newSlp, newDdln }:props) {
               <button className="sm-slp-auto-btn">{"Auto"}</button>
               <div className="sm-slp-inpt-wrp">
                 <div className="sm-slp-inpt-grp">
-                  <input type="number" className="sm-slp-inpt" placeholder="0.50"/>
+                  <input type="number" className="sm-slp-inpt" placeholder="0.5" onChange={(e)=>{newSlp(e.target.value)}}/>
                   <span>{"%"}</span>
                 </div>
                 {/* <small>{"This value may be a little to high"}</small> */}
@@ -50,7 +50,7 @@ export default function SettingsModal({ offMe, newSlp, newDdln }:props) {
               {showTxdInfo && <div className="sm-func-info">{"Your transaction will revert if it is pending for more than this period of time."}</div>}
             </div>
             <div className="sm-txd-wrp">
-              <input type="number" className="sm-txd-inpt"/>
+              <input type="number" className="sm-txd-inpt" placeholder="20" onChange={(e)=>{newDdln(Math.floor(Date.now() / 1000) + (60 * (Number(e.target.value) || 0)))}}/>
               <span>{"minutes"}</span>
             </div>
           </div>

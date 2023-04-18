@@ -19,8 +19,14 @@
   background: none
   @include fl-bl
   @include fl-c
+  @media(max-width: $lg)
+    margin-left: -20px
+  @media(max-width: $md)
+    margin-left: 80px
   @media(max-width: $sm)
-    margin-left: 50px
+    margin-left: -30px
+  @media(max-width: 350px)
+    margin-left: 0px
 
 .sm-edge
   position: relative
@@ -80,14 +86,14 @@
   font-size: 1.2rem
 
 .sm-func-info-icon
-  @include def-faicon
+  @include def-rfaicon
   cursor: pointer
   height: 1.2rem
 
 .sm-func-info
   position: absolute
   right: 145px
-  border: 1px solid #000
+  border: 1px solid $color-subtext
   width: 230px
   background: #000
   border-radius: 0.4em
@@ -136,6 +142,7 @@
   @include def-rp
   font-size: 1.2rem
   text-align: right
+  color: #fff
 
 .sm-txd-wrp
   width: 100%
@@ -154,6 +161,7 @@
   font-size: 1.2rem
   outline: none
   background: none
+  color: #fff
 
 
 
