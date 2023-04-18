@@ -43,7 +43,8 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
     case "rec":
       if(recTkn.name == "Ethereum"){
         await swap(recTkn, payTkn, recVal, "TEE")
-      }else{await swap(recTkn, payTkn, recVal, "TET")}
+      }
+      else{await swap(recTkn, payTkn, recVal, "TET")}
     }
   }
 
@@ -97,7 +98,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
     }
   }
 
-  async function swap(getTkn:gtkn, giveTkn:gtkn, amount:string, type:"ETT"|"TET"|"EET"|"TEE", slippage = defSlp, deadline = defDeadline){
+  async function swap(getTkn:gtkn, giveTkn:gtkn, amount:string, type:"ETT"|"TET"|"EET"|"TEE"|"ETHET"|"ETETH", slippage = defSlp, deadline = defDeadline){
     setDisableSwap(true)
     const approved = await approveRouter(giveTkn, amount)
     const routerCtrt = new ethers.Contract(UNISWAP_ROUTERV2_ADDRESS, UniswapRouterABI.abi, signer)
