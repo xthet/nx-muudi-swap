@@ -7,7 +7,10 @@ export const getStaticProps = async () => {
 
   if (!data) {
     return {
-      notFound: true,
+      redirect: {
+        destination: "/",
+        permanent: false
+      }
     }
   }
 
