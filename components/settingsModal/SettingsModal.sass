@@ -6,8 +6,27 @@
   bottom: 0
   width: 100%
   z-index: 19
-  background: rgba(0,0,0,0.8)
+  background: rgba(0,0,0,0.1)
   @include fl-cc
   @include fl-c
 
 .sm-modal
+  position: fixed
+  margin-left: 100px
+  margin-top: 45px
+  z-index: 20
+  background: orange
+  @include fl-bl
+  @include fl-c
+  @media(max-width: $sm)
+    margin-left: 50px
+
+.sm-edge
+  width: 80px
+  height: 30px
+  background: blue
+
+.sm-box
+  width: 200px
+  height: 50px
+  background: salmon
