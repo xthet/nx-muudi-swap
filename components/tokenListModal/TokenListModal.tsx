@@ -1,10 +1,9 @@
+import popTokens from "@/constants/popTokens.json"
 import { gtkn } from "@/types"
 import { faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import useInfiniteScroll from "react-infinite-scroll-hook"
-import popTokens from "@/constants/popTokens.json"
-import { ethTkn } from "@/constants/constants"
 import { useMediaQuery } from "react-responsive"
 
 interface props {
