@@ -25,10 +25,9 @@ export default function TokenListModal({ offMe, tokens, insetTkn, selTkn }:props
     loading: loading,
     hasNextPage: hasNext,
     disabled: !!error,
-    onLoadMore: ()=>{},
+    onLoadMore: ()=>{offset >= 4060 ? setHasNext(false) : setOffset(prev=>prev + 50)},
     rootMargin: "0px 0px 400px 0px"
-  })
-  // offset >= 4060 ? setHasNext(false) : setOffset(prev=>prev + 50)}
+  }) 
   function findInput(val:string){
     let exactArr:gtkn[] = []
     let qTknsArr:gtkn[] = tokens.filter(token=>{
