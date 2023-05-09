@@ -107,7 +107,7 @@ export default function TokenListModal({ offMe, tokens, insetTkn, selTkn }:props
         {!isVSmallScreen && <div className="tlm-edge">
           <div className="tlm-trz"></div>
           <div className="tlm-trz-skw"></div>
-          <div className="tlm-trz-txt">{":987_tokens:"}</div>
+          <div className="tlm-trz-txt">{"412 tokens"}</div>
         </div>}
       </div>
     </>
