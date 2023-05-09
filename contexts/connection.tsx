@@ -92,9 +92,7 @@ function ConnectionProvider ({ children }:props) {
     if (typeof window.ethereum !== "undefined") {
       setHasMetamask(true)
       updateUI().catch(e=>console.log(e))
-    }else{if(confirm("You need a Metamask wallet to use this site,\nWould you like to install Metamask")){
-      router.push("https://metamask.io/")
-    }else{alert("Please install Metamask ;)")}}
+    }
   }, [account, chainId])
 
   const payload:conn = { hasMetamask, isConnected, chainId, signer, account, connect, balance, provider:provider! }

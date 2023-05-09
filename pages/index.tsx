@@ -2,7 +2,7 @@ import { Swapper } from "@/components/exportComps"
 import Head from "next/head"
 
 export const getStaticProps = async () => {
-  const response = await fetch("https://wispy-bird-88a7.uniswap.workers.dev/?url=http://tokens.1inch.eth.link")
+  const response = await fetch("https://cdn.furucombo.app/furucombo.tokenlist.json")
   const data = await response.json()
 
   if (!data) {

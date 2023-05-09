@@ -32,6 +32,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
   const [ethPrice, setEthPrice] = useState("")
   const [defSlp, setDefSlp] = useState("50")
   const [defDeadline, SetDefDeadline] = useState(Math.floor(Date.now() / 1000) + (60 * 20))
+  const [NMFP, setNMFP] = useState(false)
 
   async function checkSwap(){
     switch(currInpt){
@@ -79,6 +80,7 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
         const response = await fetch(
           `https://api.0x.org/swap/v1/price?sellToken=${params.sellToken}&buyToken=${params.buyToken}&${type == "pay" ? "sellAmount=" + params.sellAmount : "buyAmount=" + params.buyAmount }&includedSources=${params.includedSources}`,
         ).then(res=>res.json()).then((data)=>{
+          if(data.validationErrors){setNMFP(true)}else{setNMFP(false)}
           setPayUSDRate(((Number((((Number(data.sellAmount) / (Math.pow(10,payTkn.decimals))) / Number(data.sellTokenToEthRate)) * Number(ethPrice)).toFixed(2))) || "").toLocaleString())
           setRecUSDRate(((Number((((Number(data.buyAmount) / (Math.pow(10,recTkn.decimals))) / Number(data.buyTokenToEthRate)) * Number(ethPrice)).toFixed(2))) || "").toLocaleString())
           type == "pay" ? setRecVal((Number(data.buyAmount) / (Math.pow(10,recTkn.decimals))).toFixed(4) || "") : setPayVal((Number(data.sellAmount) / (Math.pow(10,payTkn.decimals))).toFixed(4) || "")
@@ -347,11 +349,11 @@ export default function Swapper({ tokens }:{tokens:any[]}) {
           <div className="sw-inpt-grp">
             <div className="sw-py-max-grp">
               <span className="sw-py">{"RECEIVE"}</span>
-              <span className="sw-py">
+              { NMFP ? <span className="sw-py">{"NO MARKET FOR PAIR"}</span> : <span className="sw-py">
                 {recTkn.symbol !== "Select a token" && `${rprice && "1 "} 
                 ${recTkn.symbol.substring(0,4)} ${rprice ? "=" : ":"} ${rprice && rprice !== "NaN" ? Number(rprice).toFixed(4) : ""} 
                 ${payTkn.symbol.substring(0,4)}`}
-              </span>
+              </span>}
             </div>
             <div className="sw-inpt-cont">
               <div className="sw-inpt-box">
